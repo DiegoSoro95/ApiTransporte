@@ -2,8 +2,11 @@ var Empleados = require('../models/Empleados')
 module.exports = {
 
 buscar: function (req, res) {
-  var q = req.query.q
-  Empleados.find({ $text: { $buscar: q } }, function(err, empleados) {
+  empleado = new Empleados();
+
+  var idUsuario = req.query.idUsuario
+
+  empleado.find('first',{ where: "usuario =" + idUsuario}, function(err, empleados) {
     if(err) {
       return res.status(500).json({
         message: 'Error en la búsqueda'
@@ -13,18 +16,24 @@ buscar: function (req, res) {
   })
 },
 list: function(req, res) {
-    Empleados.find(function(err, empleados){
-    if(err) {
+    empleado = new Empleados();
+
+    empleado.find('all',function(error, resultado){
+    if(error) {
       return res.status(500).json({
         message: 'Error obteniendo la empleados'
       })
     }
-    return res.json(empleados)
+    return res.json(resultado)
   })
 },
-show: function(req, res) {
-  var id = req.params.id
-  Empleados.findOne({_id: id}, function(err, empleados){
+logueo: function(req, res) {
+  var usuario = req.params.usuario;
+  var pass = req.params.pass;
+
+  empleado = new Empleados();
+
+  empleado.find('first',{where: "usuario =" + usuario + " and contrasenia=" + pass}, function(err, empleados){
     if(err) {
       return res.status(500).json({
         message: 'Se ha producido un error al obtener la empleados'
@@ -32,12 +41,13 @@ show: function(req, res) {
     }
     if(!empleados) {
       return res.status(404).json( {
-        message: 'No tenemos esta empleados'
+        message: 'Datos ingresados incorrectos'
       })
     }
     return res.json(empleados)
   })
 },
+//Hasta aqui va 
 create: function(req, res) {
   var empleados = new Empleados (req.body)
   Empleados.save(function(err, empleados){

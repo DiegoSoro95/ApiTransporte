@@ -7,8 +7,8 @@ let MyAppModel = mysqlModel.createConnection({
     database: process.env.DBNAME
 });
 
-var Empleado = MyAppModel.extend({
+var Empleados = MyAppModel.extend({
     tableName: "empleado",
 });
 
-module.exports = Empleado
+module.exports = Empleados

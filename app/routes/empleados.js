@@ -1,14 +1,17 @@
 var router = require('express').Router()
 var empleadosController = require ('../controllers/empleadosController')
 
-router.get('/buscar', function(req, res) {
+  //http://localhost:4000/api/empleados/buscar?idUsuario=1
+  router.get('/buscar', function(req, res) {
     empleadosController.buscar(req, res)
   })
+  //http://localhost:4000/api/empleados/listar
   router.get('/listar', function(req, res) {
     empleadosController.list(req, res)
   })
-  router.get('/:id', function(req, res) {
-    empleadosController.show(req, res)
+  //http://localhost:4000/api/empleados/logueo/diego/diego123
+  router.get('/logueo/:usuario/:pass', function(req, res) {
+    empleadosController.logueo(req, res)
   })
   router.post('/', function(req, res) {
     empleadosController.create(req, res)
