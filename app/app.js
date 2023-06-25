@@ -1,5 +1,6 @@
-var express = require('express') //llamamos a Express
-var app = express()       
+const express = require('express') //llamamos a Express
+const cors = require("cors");
+const app = express()       
 var bodyParser = require('body-parser') 
 
 /*toda la configuración de bbdd la hacemos en un fichero a parte*/
@@ -7,6 +8,10 @@ require('./db')
 
 var port = process.env.PORT || 4000  // establecemos nuestro puerto
 
+app.use(cors());
+app.get("/", (req,res)=>{
+  res.send("server working");
+});
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())            
 
