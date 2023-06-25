@@ -5,8 +5,8 @@ buscar: function (req, res) {
   empleado = new Empleados();
 
   var idUsuario = req.query.idUsuario
-
-  empleado.find('first',{ where: "usuario =" + idUsuario}, function(err, empleados) {
+  console.log(idUsuario);
+  empleado.find('first',{ where: "usuario ='" + idUsuario+"'"}, function(err, empleados) {
     if(err) {
       return res.status(500).json({
         message: 'Error en la búsqueda'
@@ -33,7 +33,7 @@ logueo: function(req, res) {
 
   empleado = new Empleados();
 
-  empleado.find('first',{where: "usuario =" + usuario + " and contrasenia=" + pass}, function(err, empleados){
+  empleado.find('first',{where: "usuario ='" + usuario + "' and contrasenia='" + pass+ "'"}, function(err, empleados){
     if(err) {
       return res.status(500).json({
         message: 'Se ha producido un error al obtener la empleados'
