@@ -9,8 +9,8 @@ var empleadosController = require ('../controllers/empleadosController')
   router.get('/listar', function(req, res) {
     empleadosController.list(req, res)
   })
-  //http://localhost:4000/api/empleados/logueo/diego/diego123
-  router.get('/logueo/:usuario/:pass', function(req, res) {
+  //http://localhost:4000/api/empleados/logueo?usuario=diego&contrasenia=diego123
+  router.get('/logueo', function(req, res) {
     empleadosController.logueo(req, res)
   })
   router.post('/', function(req, res) {

@@ -28,8 +28,8 @@ list: function(req, res) {
   })
 },
 logueo: function(req, res) {
-  var usuario = req.params.usuario;
-  var pass = req.params.pass;
+  var usuario = req.query.usuario;
+  var pass = req.query.contrasenia;
 
   empleado = new Empleados();
 
