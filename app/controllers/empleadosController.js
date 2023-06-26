@@ -40,7 +40,7 @@ logueo: function(req, res) {
       })
     }
     if(!empleados) {
-      return res.status(404).json( {
+      return res.status(200).json( {
         message: 'Datos ingresados incorrectos'
       })
     }
