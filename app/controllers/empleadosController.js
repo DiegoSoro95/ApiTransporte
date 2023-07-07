@@ -33,18 +33,32 @@ logueo: function(req, res) {
 
   empleado = new Empleados();
 
-  empleado.find('first',{where: "usuario ='" + usuario + "' and contrasenia='" + pass+ "'"}, function(err, empleados){
+  empleado.query("CALL LoginAdministrador ('"+usuario+"','"+pass+"')", function(err,result, empleados){
     if(err) {
       return res.status(500).json({
         message: 'Se ha producido un error al obtener la empleados'
       })
     }
+
     if(!empleados) {
-      return res.status(200).json( {
-        message: 'Datos ingresados incorrectos'
+      empleado2 = new Empleados();
+      empleado2.query("CALL LoginTecnico ("+usuario+","+pass+")", function(err2,result2, empleados2){
+        if(err2) {
+          return res.status(500).json({
+            message: 'Se ha producido un error al obtener la empleados'
+          })
+        }
+
+        if(!empleados2) {
+          return res.status(200).json( {
+            message: 'Datos ingresados incorrectos'
+          })
+        }
+
+        return res.json(result2[0]);
       })
     }
-    return res.json(empleados)
+    return res.json(result[0]);
   })
 },
 //Hasta aqui va 

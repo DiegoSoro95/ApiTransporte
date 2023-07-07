@@ -10,7 +10,7 @@ var empleadosController = require ('../controllers/empleadosController')
     empleadosController.list(req, res)
   })
   //http://localhost:4000/api/empleados/logueo?usuario=diego&contrasenia=diego123
-  router.get('/logueo', function(req, res) {
+  router.post('/logueo', function(req, res) {
     empleadosController.logueo(req, res)
   })
   router.post('/', function(req, res) {
