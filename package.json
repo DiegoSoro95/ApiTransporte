@@ -22,5 +22,5 @@
     "mysql-model": "^0.0.2",
     "underscore": "^1.13.6"
   },
-  "start": "nodemon app/server.js"
+  "start": "node app/app.js"
 }
