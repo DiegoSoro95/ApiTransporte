@@ -30,35 +30,36 @@ list: function(req, res) {
 logueo: function(req, res) {
   var usuario = req.body.usuario;
   var pass = req.body.contrasenia;
+  var info = '';
 
   empleado = new Empleados();
 
-  empleado.query("CALL LoginAdministrador ('"+usuario+"','"+pass+"')", function(err,result, empleados){
+  empleado.query("CALL LoginTecnico ('"+usuario+"','"+pass+"')", function(err,result, empleados){
     if(err) {
       return res.status(500).json({
-        message: 'Se ha producido un error al obtener la empleados'
+        message: 'Se ha producido un error al obtener el empleado'
       })
     }
 
-    if(!empleados) {
-      empleado2 = new Empleados();
-      empleado2.query("CALL LoginTecnico ("+usuario+","+pass+")", function(err2,result2, empleados2){
+    if(result[0].length == 0) {
+      empleado.query("CALL LoginAdministrador ('"+usuario+"','"+pass+"')", function(err2,result2, empleados2){
         if(err2) {
           return res.status(500).json({
-            message: 'Se ha producido un error al obtener la empleados'
+            message: 'Se ha producido un error al obtener el empleado'
           })
-        }
+        };
 
-        if(!empleados2) {
+        if(result2[0].length == 0) {
           return res.status(200).json( {
             message: 'Datos ingresados incorrectos'
           })
-        }
+        };
 
         return res.json(result2[0]);
       })
-    }
+    } else {
     return res.json(result[0]);
+  }
   })
 },
 //Hasta aqui va 
