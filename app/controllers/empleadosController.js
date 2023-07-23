@@ -1,4 +1,5 @@
 var Empleados = require('../models/Empleados')
+
 module.exports = {
 
 buscar: function (req, res) {
@@ -30,7 +31,6 @@ list: function(req, res) {
 logueo: function(req, res) {
   var usuario = req.body.usuario;
   var pass = req.body.contrasenia;
-
   empleado = new Empleados();
 
   empleado.query("CALL LoginAdministrador ('"+usuario+"','"+pass+"')", function(err,result, empleados){
