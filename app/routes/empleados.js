@@ -13,13 +13,31 @@ var empleadosController = require ('../controllers/empleadosController')
   router.post('/logueo', function(req, res) {
     empleadosController.logueo(req, res)
   })
-  router.post('/', function(req, res) {
-    empleadosController.create(req, res)
+  router.post('/logueoChofer', function(req, res) {
+    empleadosController.logueoChofer(req, res)
   })
-  router.put('/:id', function(req, res) {
-    empleadosController.update(req, res)
+  router.get('/buscarChofer', function(req, res) {
+    empleadosController.buscarChofer(req, res)
   })
-  router.delete('/:id', function(req, res) {
-    empleadosController.remove(req, res)
+  router.post('/altaChofer', function(req, res) {
+    empleadosController.altaChofer(req, res)
+  })
+  router.post('/modificarChofer', function(req, res) {
+    empleadosController.modificarChofer(req, res)
+  })
+  router.post('/bajaChofer', function(req, res) {
+    empleadosController.bajaChofer(req, res)
+  })
+  router.get('/buscarTecnico', function(req, res) {
+    empleadosController.buscarTecnico(req, res)
+  })
+  router.post('/altaTecnico', function(req, res) {
+    empleadosController.altaTecnico(req, res)
+  })
+  router.post('/modificarTecnico', function(req, res) {
+    empleadosController.modificarTecnico(req, res)
+  })
+  router.post('/bajaTecnico', function(req, res) {
+    empleadosController.bajaTecnico(req, res)
   })
   module.exports = router
