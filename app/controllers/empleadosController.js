@@ -231,6 +231,28 @@ module.exports = {
   },
   listadoChoferesSinTransporteAsignado: function(req,res){
     //GET
+    db_con.query(
+      'CALL ListadoChoferSinTransporteAsignado()', // Pasa los parámetros requeridos por el procedimiento almacenado
+      (err, results) => {
+        if (err) {
+          return res.status(500).json({
+            message: 'Error comuniquese con sistemas'
+          })
+        }
+
+        if(results[0].length == 0) {
+          return res.status(200).json( {
+            message: 'No hay choferes sin transporte asignado'
+          })
+        }
+        else{
+          return res.status(200).json( {
+            message: 'Hay choferes sin transporte asignado',
+            listado: results[0],
+          })
+        }
+      }
+    );
   },
   buscarTecnico: function(req,res){
     empleado = new Empleados();

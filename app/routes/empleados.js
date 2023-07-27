@@ -28,6 +28,9 @@ var empleadosController = require ('../controllers/empleadosController')
   router.post('/bajaChofer', function(req, res) {
     empleadosController.bajaChofer(req, res)
   })
+  router.get('/listadoChoferesSinTransporteAsignado', function(req, res) {
+    empleadosController.listadoChoferesSinTransporteAsignado(req, res)
+  })
   router.get('/buscarTecnico', function(req, res) {
     empleadosController.buscarTecnico(req, res)
   })
