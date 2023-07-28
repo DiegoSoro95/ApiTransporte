@@ -31,6 +31,9 @@ var empleadosController = require ('../controllers/empleadosController')
   router.get('/listadoChoferesSinTransporteAsignado', function(req, res) {
     empleadosController.listadoChoferesSinTransporteAsignado(req, res)
   })
+  router.get('/listadoChofer', function(req, res) {
+    empleadosController.listadoChofer(req, res)
+  })
   router.get('/buscarTecnico', function(req, res) {
     empleadosController.buscarTecnico(req, res)
   })
