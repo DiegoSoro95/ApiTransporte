@@ -1,8 +1,9 @@
 var Transportes = require('../models/Transportes')
+var db_con = require('../db')
 
 module.exports = {
     buscarTransporte: function(req,res){
-        const idTransporte = req.body.idTransporte;
+        const idTransporte = req.query.idTransporte;
 
         //GET
         db_con.query(
@@ -69,7 +70,7 @@ module.exports = {
       );
     },
     listadoTransportesAsignados: function(req, res){
-      const idChofer = req.body.idChofer;
+      const idChofer = req.query.idChofer;
 
       //GET
       db_con.query(
