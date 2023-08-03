@@ -415,14 +415,15 @@ module.exports = {
       }
     );
   },
-  modificarContraseña: function(req, res){
+  modificarContrasenia: function(req, res){
     //POST
     const usuario = req.body.usuario;
+    const pass = req.body.contrasenia;
     let resultado ='';
 
     db_con.query(
-      'CALL ModificarContraseña(?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
-      [usuario], // Pasa los parámetros requeridos por el procedimiento almacenado
+      'CALL ModificarContrasenia(?,?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
+      [usuario, pass], // Pasa los parámetros requeridos por el procedimiento almacenado
       (err, results) => {
         if (err) {
           return res.status(500).json({
