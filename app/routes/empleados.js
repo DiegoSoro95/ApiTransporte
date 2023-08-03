@@ -46,4 +46,7 @@ var empleadosController = require ('../controllers/empleadosController')
   router.post('/bajaTecnico', function(req, res) {
     empleadosController.bajaTecnico(req, res)
   })
+  router.post('/ModificarContraseña', function(req, res) {
+    empleadosController.modificarContraseña(req, res)
+  })
   module.exports = router

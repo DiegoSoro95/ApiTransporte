@@ -155,15 +155,14 @@ module.exports = {
     //POST
     // Llama al procedimiento almacenado
     const usuario = req.body.usuario;
-    const pass = req.body.contrasenia;
     const nombre = req.body.nombre;
     const licencia = req.body.licencia;
     const telefono = req.body.telefono;
     let resultado ='';
 
     db_con.query(
-      'CALL ModificarChofer(?,?,?,?,?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
-      [usuario, pass, nombre, licencia, telefono], // Pasa los parámetros requeridos por el procedimiento almacenado
+      'CALL ModificarChofer(?,?,?,?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
+      [usuario, nombre, licencia, telefono], // Pasa los parámetros requeridos por el procedimiento almacenado
       (err, results) => {
         if (err) {
           return res.status(500).json({
@@ -345,14 +344,13 @@ module.exports = {
     //POST
     // Llama al procedimiento almacenado
     const usuario = req.body.usuario;
-    const pass = req.body.contrasenia;
     const nombre = req.body.nombre;
     const especializacion = req.body.especializacion;
     let resultado ='';
 
     db_con.query(
-      'CALL ModificarTecnico(?,?,?,?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
-      [usuario, pass, nombre, especializacion], // Pasa los parámetros requeridos por el procedimiento almacenado
+      'CALL ModificarTecnico(?,?,?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
+      [usuario, nombre, especializacion], // Pasa los parámetros requeridos por el procedimiento almacenado
       (err, results) => {
         if (err) {
           return res.status(500).json({
@@ -417,6 +415,41 @@ module.exports = {
       }
     );
   },
+  modificarContraseña: function(req, res){
+    //POST
+    const usuario = req.body.usuario;
+    let resultado ='';
 
+    db_con.query(
+      'CALL ModificarContraseña(?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
+      [usuario], // Pasa los parámetros requeridos por el procedimiento almacenado
+      (err, results) => {
+        if (err) {
+          return res.status(500).json({
+            message: 'Error comuniquese con sistemas'
+          })
+        }
+
+        // Obtener el valor del parámetro de salida
+        db_con.query('SELECT @resultado AS resultado', (err, results) => {
+          if (err) {
+            return res.status(500).json({
+              message: 'Error comuniquese con sistemas'
+            })
+          } else {
+            resultado = results[0].resultado;
+
+            if (resultado == null){
+              resultado = 'Contraseña cambiada con exito';
+            }
+            // Cierra la conexión
+            return res.status(200).json( {
+              message: resultado
+            })
+          }  
+        });
+      }
+    );
+  },
 
 }
