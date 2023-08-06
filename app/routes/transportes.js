@@ -35,6 +35,6 @@ router.post('/modificarTransporte', function(req, res) {
     transportesController.modificarTransporte(req, res)
 })
 router.post('/eliminarTransporte', function(req, res) {
-    transportesController.altaTransporteConChofer(req, res)
+    transportesController.eliminarTransporte(req, res)
 })
 module.exports = router

@@ -7,7 +7,7 @@ module.exports = {
     empleado = new Empleados();
 
     var idUsuario = req.query.idUsuario
-    console.log(idUsuario);
+
     empleado.find('first',{ where: "usuario ='" + idUsuario+"'"}, function(err, empleados) {
       if(err) {
         return res.status(500).json({
