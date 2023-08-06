@@ -204,7 +204,7 @@ module.exports = {
 
     db_con.query(
         'CALL EliminarCamion(?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
-        [usuario], // Pasa los parámetros requeridos por el procedimiento almacenado
+        [matricula], // Pasa los parámetros requeridos por el procedimiento almacenado
         (err, results) => {
         if (err) {
             return res.status(500).json({

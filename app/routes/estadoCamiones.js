@@ -1,26 +1,20 @@
 var router = require('express').Router()
 var estadoCamionesController = require ('../controllers/estadoCamionesController')
 
-  //http://localhost:4000/api/estadoCamiones/buscar?idUsuario=1
-  router.get('/buscar', function(req, res) {
-    estadoCamionesController.buscar(req, res)
+  router.get('/buscarEstadoCamion', function(req, res) {
+    estadoCamionesController.buscarEstadoCamion(req, res)
   })
-  //http://localhost:4000/api/estadoCamiones/listar
-  router.get('/listar', function(req, res) {
-    estadoCamionesController.list(req, res)
+  router.get('/listadoEstadoCamion', function(req, res) {
+    estadoCamionesController.listadoEstadoCamion(req, res)
   })
-  //http://localhost:4000/api/estadoCamiones/logueo?usuario=diego&contrasenia=diego123
-  router.post('/logueo', function(req, res) {
-    estadoCamionesController.logueo(req, res)
+  router.post('/altaEstadoCamion', function(req, res) {
+    estadoCamionesController.altaEstadoCamion(req, res)
   })
-  router.post('/', function(req, res) {
-    estadoCamionesController.create(req, res)
+  router.post('/modificarEstadoCamion', function(req, res) {
+    estadoCamionesController.modificarEstadoCamion(req, res)
   })
-  router.put('/:id', function(req, res) {
-    estadoCamionesController.update(req, res)
-  })
-  router.delete('/:id', function(req, res) {
-    estadoCamionesController.remove(req, res)
+  router.post('/eliminarEstadoCamion', function(req, res) {
+    estadoCamionesController.eliminarEstadoCamion(req, res)
   })
   module.exports = router
   /*
