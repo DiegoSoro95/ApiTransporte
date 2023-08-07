@@ -13,6 +13,9 @@ router.get('/listadoTransportesAsignados', function(req, res) {
 router.post('/inicioTransporte', function(req, res) {
     transportesController.inicioTransporte(req, res)
 })
+router.post('/finalizarTransporte', function(req, res) {
+    transportesController.finalizarTransporte(req, res)
+})
 router.get('/listadoTranporteTiempoReal', function(req, res) {
     transportesController.listadoTranporteTiempoReal(req, res)
 })

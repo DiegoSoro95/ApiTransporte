@@ -135,6 +135,44 @@ module.exports = {
         }
       );
     },
+    finalizarTransporte: function(req, res){
+      //POST
+      // Llama al procedimiento almacenado
+      const idTransporte = req.body.idTransporte;
+      let resultado ='';
+  
+      db_con.query(
+        'CALL FinalizarTransporte(?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
+        [idTransporte], // Pasa los parámetros requeridos por el procedimiento almacenado
+        (err, results) => {
+          if (err) {
+            return res.status(500).json({
+              message: 'Error comuniquese con sistemas'
+            })
+          }
+  
+          // Obtener el valor del parámetro de salida
+          db_con.query('SELECT @resultado AS resultado', (err, results) => {
+            if (err) {
+              return res.status(500).json({
+                message: 'Error comuniquese con sistemas'
+              })
+            } 
+            else {
+              resultado = results[0].resultado;
+  
+              if (resultado == null){
+                resultado = 'Se finalizó el transporte exitosamente';
+              }
+              // Cierra la conexión
+              return res.status(200).json( {
+                message: resultado
+              })
+            }  
+          });
+        }
+      );
+    },
     listadoTranporteTiempoReal: function(req, res){
       //FALTA PARTE DE MONGO
       //GET
