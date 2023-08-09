@@ -22,4 +22,4 @@ app.use('/api', router)
 
 //arrancamos el servidor
 app.listen(port)
-console.log('API escuchando en el puerto ' + port)
+console.log('API escuchando en el puerto ' + port) //instalar npm install express jsonwebtoken body-parser

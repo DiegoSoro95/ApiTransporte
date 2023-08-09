@@ -1,5 +1,6 @@
-var Empleados = require('../models/Empleados')
-var db_con = require('../db')
+var Empleados = require('../models/Empleados');
+var db_con = require('../db');
+var auth = require('../auth');
 
 module.exports = {
 
@@ -55,12 +56,24 @@ module.exports = {
               message: 'Datos ingresados incorrectos'
             })
           };
+          usuario ={nombreUsuario:result2[0][0].usuarioA};
+          const token = auth.generateToken(usuario);
 
-          return res.json(result2[0]);
+          return res.status(200).json( {
+            token: token,
+            usuario: result2[0][0],
+          })
         })
-      } else {
-      return res.json(result[0]);
-    }
+      } 
+      else {
+        usuario ={nombreUsuario:result[0][0].usuarioT};
+        const token = auth.generateToken(usuario);
+        
+        return res.status(200).json( {
+          token: token,
+          usuario: result[0][0],
+        })
+      }
     })
   },
   logueoChofer: function(req, res) {
@@ -82,7 +95,13 @@ module.exports = {
         })
       } 
       else {
-        return res.json(result[0]);
+        usuario ={nombreUsuario:result[0][0].usuarioC};
+        const token = auth.generateToken(usuario);
+        
+        return res.status(200).json( {
+          token: token,
+          usuario: result[0][0],
+        })
       }
     })
   },
