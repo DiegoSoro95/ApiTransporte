@@ -62,6 +62,7 @@ module.exports = {
           return res.status(200).json( {
             token: token,
             usuario: result2[0][0],
+            message: 'Datos ingresados correctos'
           })
         })
       } 
@@ -72,6 +73,7 @@ module.exports = {
         return res.status(200).json( {
           token: token,
           usuario: result[0][0],
+          message: 'Datos ingresados correctos'
         })
       }
     })
@@ -101,6 +103,7 @@ module.exports = {
         return res.status(200).json( {
           token: token,
           usuario: result[0][0],
+          message: 'Datos ingresados correctos'
         })
       }
     })
