@@ -1,4 +1,5 @@
 var router = require('express').Router()
+var camiones = require('./camiones')
 var empleados = require('./empleados')
 var clientes = require('./clientes')
 var estadoCamiones = require('./estadoCamiones')
@@ -8,6 +9,7 @@ var solicitudMateriales = require('./solicitudMateriales')
 var tipoCamiones = require('./tipoCamiones')
 var transportes = require('./transportes')
 
+router.use('/camiones', camiones)
 router.use('/empleados', empleados)
 router.use('/clientes', clientes)
 router.use('/estadoCamiones', estadoCamiones)
