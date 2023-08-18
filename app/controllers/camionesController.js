@@ -111,6 +111,32 @@ module.exports = {
         }
     );
     },
+    listarCamionesDisponibles: function(req, res){
+    
+        //GET
+        db_con.query(
+            'CALL ListadoHistorialMantenimientoCamion()', // Pasa los parámetros requeridos por el procedimiento almacenado
+            (err, results) => {
+            if (err) {
+                return res.status(500).json({
+                message: 'Error comuniquese con sistemas'
+                })
+            }
+    
+            if(results[0].length == 0) {
+                return res.status(200).json( {
+                message: 'No existen camiones disponibles'
+                })
+            }
+            else{
+                return res.status(200).json( {
+                message: 'Existen camiones disponibles',
+                listado: results[0],
+                })
+            }
+            }
+        );
+    },
     altaCamion: function(req, res){
     //POST
     // Llama al procedimiento almacenado

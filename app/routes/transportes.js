@@ -42,6 +42,20 @@ router.get('/listadoTransportesAsignados', function(req, res) {
     }
     transportesController.listadoTransportesAsignados(req, res)
 })
+router.get('/listarTransporteSinChofer', function(req, res) {
+    const token = req.header('Authorization');
+
+    if (!token) {
+        return res.status(401).json({ message: 'Token no proporcionado' });
+    }
+
+    const decoded = auth.verifyToken(token);
+    if (!decoded) {
+        return res.status(403).json({ message: 'Token inválido' });
+    }
+
+    transportesController.listarTransporteSinChofer(req, res)
+})
 router.post('/inicioTransporte', function(req, res) {
     const token = req.header('Authorization');
 

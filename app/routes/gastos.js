@@ -15,6 +15,19 @@ const auth = require('../auth');
     }
     gastosController.listarGastos(req, res)
   })
+  router.get('/listarGastosPorTransporte', function(req, res) {
+    const token = req.header('Authorization');
+
+    if (!token) {
+        return res.status(401).json({ message: 'Token no proporcionado' });
+    }
+
+    const decoded = auth.verifyToken(token);
+    if (!decoded) {
+        return res.status(403).json({ message: 'Token inválido' });
+    }
+    gastosController.listarGastosPorTransporte(req, res)
+  })
   router.get('/exportarReporteGastos', function(req, res) {
     const token = req.header('Authorization');
 
@@ -40,6 +53,32 @@ const auth = require('../auth');
         return res.status(403).json({ message: 'Token inválido' });
     }
     gastosController.iniciarRegistroGastos(req, res)
+  })
+  router.post('/modificarGastos', function(req, res) {
+    const token = req.header('Authorization');
+
+    if (!token) {
+        return res.status(401).json({ message: 'Token no proporcionado' });
+    }
+
+    const decoded = auth.verifyToken(token);
+    if (!decoded) {
+        return res.status(403).json({ message: 'Token inválido' });
+    }
+    gastosController.modificarGastos(req, res)
+  })
+  router.post('/eliminarGastos', function(req, res) {
+    const token = req.header('Authorization');
+
+    if (!token) {
+        return res.status(401).json({ message: 'Token no proporcionado' });
+    }
+
+    const decoded = auth.verifyToken(token);
+    if (!decoded) {
+        return res.status(403).json({ message: 'Token inválido' });
+    }
+    gastosController.eliminarGastos(req, res)
   })
   module.exports = router
   /*

@@ -97,6 +97,32 @@ module.exports = {
         }
       );
     },
+    listarTransporteSinChofer: function(req, res){
+    
+      //GET
+      db_con.query(
+          'CALL ListadoTransporteSinChofer()', // Pasa los parámetros requeridos por el procedimiento almacenado
+          (err, results) => {
+          if (err) {
+              return res.status(500).json({
+              message: 'Error comuniquese con sistemas'
+              })
+          }
+  
+          if(results[0].length == 0) {
+              return res.status(200).json( {
+              message: 'No existen transportes sin chofer'
+              })
+          }
+          else{
+              return res.status(200).json( {
+              message: 'Existen transportes sin chofer',
+              listado: results[0],
+              })
+          }
+          }
+      );
+    },
     inicioTransporte: function(req, res){
       //POST
       // Llama al procedimiento almacenado
