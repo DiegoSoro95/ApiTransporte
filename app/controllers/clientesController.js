@@ -98,7 +98,7 @@ module.exports = {
     );
 
     },
-    modificarTipoCamion: function(req, res){
+    modificarCliente: function(req, res){
     //POST
     // Llama al procedimiento almacenado
     const documento = req.body.documento;
@@ -138,7 +138,7 @@ module.exports = {
         }
     );
     },
-    eliminarTipoCamion: function(req, res){
+    eliminarCliente: function(req, res){
     //POST
     // Llama al procedimiento almacenado
     const documento = req.body.documento;
