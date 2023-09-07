@@ -27,7 +27,7 @@ const auth = require('../auth');
     if (!decoded) {
         return res.status(403).json({ message: 'Token inválido' });
     }
-    tipoCamionesController.listadoTipoCamion(req, res)
+    tipoCamionesController.listarTipoCamion(req, res)
   })
   router.post('/altaTipoCamion', function(req, res) {
     const token = req.header('Authorization');
