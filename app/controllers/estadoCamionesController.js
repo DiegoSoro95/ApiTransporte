@@ -104,7 +104,7 @@ module.exports = {
 
     db_con.query(
         'CALL ModificarEstadoCamion(?,?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
-        [idEstado, descripcione], // Pasa los parámetros requeridos por el procedimiento almacenado
+        [idEstado, descripcion], // Pasa los parámetros requeridos por el procedimiento almacenado
         (err, results) => {
         if (err) {
             return res.status(500).json({
