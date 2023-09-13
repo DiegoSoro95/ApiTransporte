@@ -437,6 +437,31 @@ module.exports = {
       }
     );
   },
+  listadoTecnico: function(req,res){
+    //GET
+    db_con.query(
+      'CALL ListarTecnicos()', // Pasa los parámetros requeridos por el procedimiento almacenado
+      (err, results) => {
+        if (err) {
+          return res.status(500).json({
+            message: 'Error comuniquese con sistemas'
+          })
+        }
+
+        if(results[0].length == 0) {
+          return res.status(200).json( {
+            message: 'No existen tecnicos en el sistema'
+          })
+        }
+        else{
+          return res.status(200).json( {
+            message: 'Hay tecnicos en el sistema',
+            listado: results[0],
+          })
+        }
+      }
+    );
+  },
   modificarContrasenia: function(req, res){
     //POST
     const usuario = req.body.usuario;

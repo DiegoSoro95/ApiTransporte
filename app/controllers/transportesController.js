@@ -123,6 +123,32 @@ module.exports = {
           }
       );
     },
+    listarTransportes: function(req, res){
+    
+      //GET
+      db_con.query(
+          'CALL ListarTransportes()', // Pasa los parámetros requeridos por el procedimiento almacenado
+          (err, results) => {
+          if (err) {
+              return res.status(500).json({
+                message: 'Error comuniquese con sistemas'
+              })
+          }
+  
+          if(results[0].length == 0) {
+              return res.status(200).json( {
+                message: 'No existen transportes'
+              })
+          }
+          else{
+              return res.status(200).json( {
+                message: 'Existen transportes',
+                listado: results[0],
+              })
+          }
+          }
+      );
+    },
     inicioTransporte: function(req, res){
       //POST
       // Llama al procedimiento almacenado

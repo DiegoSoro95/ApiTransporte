@@ -344,6 +344,9 @@ DELIMITER ;
 CREATE PROCEDURE BuscarTecnico(pUsuario VARCHAR(50))
 	SELECT t.*,e.nombre_completo FROM empleado e JOIN tecnico t ON e.usuario= t.usuarioT WHERE e.usuario = pUsuario AND e.activo=1;
 
+CREATE PROCEDURE ListarTecnicos()
+	SELECT t.*,e.nombre_completo FROM empleado e JOIN tecnico t ON e.usuario= t.usuarioT WHERE e.activo=1;
+
 DELIMITER //
 CREATE PROCEDURE AltaTecnico(pUsuario VARCHAR(50) , pPass VARCHAR(50), pNombre VARCHAR(100), pEspecializacion VARCHAR(50), OUT MsgError VARCHAR(250))
 cuerpo:BEGIN
@@ -463,7 +466,10 @@ DELIMITER ;
 
 CREATE PROCEDURE ListarTransportesChofer(pIdChofer VARCHAR(50))
 	SELECT * FROM transporte WHERE usuarioC = pIdChofer and activo=1;
-    
+
+CREATE PROCEDURE ListarTransportes()
+	SELECT * FROM transporte WHERE activo=1;
+
 DELIMITER //
 CREATE PROCEDURE IniciarTransporte(pIdTransporte VARCHAR(50), OUT MsgError VARCHAR(100))
 BEGIN

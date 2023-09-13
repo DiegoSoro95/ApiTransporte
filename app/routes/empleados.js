@@ -101,6 +101,20 @@ const auth = require('../auth');
 
     empleadosController.listadoChofer(req, res)
   })
+  router.get('/listadoTecnico', function(req, res) {
+    const token = req.header('Authorization');
+
+    if (!token) {
+        return res.status(401).json({ message: 'Token no proporcionado' });
+    }
+
+    const decoded = auth.verifyToken(token);
+    if (!decoded) {
+        return res.status(403).json({ message: 'Token inválido' });
+    }
+
+    empleadosController.listadoTecnico(req, res)
+  })
   router.get('/buscarTecnico', function(req, res) {
     const token = req.header('Authorization');
 
