@@ -159,12 +159,6 @@ insert into tipo_camion VALUES ('CAJAB10', 'Caja abierta 10mts', '9765 X 2400 X 
 insert into tipo_camion VALUES ('CAJCE14', 'Caja cerrada 14mts', '15600 X 2450 X 3910', 5, 24500, 400);
 insert into tipo_camion VALUES ('CHATA14', 'Chata 14mts', '15600 X 2450 X 3910', 5, 24500, 400);
 
-insert into transporte values (0,'Pendiente','2024-09-01 07:00:00', null, 277, 'Montevideo', 'Mercedes, Soriano', null, null, '123456789', 1);
-insert into transporte values (0,'Pendiente','2024-09-15 07:00:00', null, 221, 'Montevideo', 'Villa del Carmen, Durazno', null, null, '987654321', 1);
-insert into transporte values (0,'Pendiente','2024-09-28 07:00:00', null, 262, 'Montevideo', 'Lascano, Rocha', null, null, '123456789', 1);
-insert into transporte values (0,'Pendiente','2024-10-01 07:00:00', null, 389, 'Montevideo', 'Tambores, Paysandú', null, null, '987654321', 1);
-insert into transporte values (0,'Pendiente','2024-10-15 07:00:00', null, 572, 'Montevideo', 'Sequeira, Artigas', null, null, '123456789', 1);
-
 INSERT INTO estado_camion (id_estado, descripcion) VALUES
     ('DIS', 'Disponible'),
     ('MAN', 'Mantenimiento'),
@@ -204,6 +198,13 @@ INSERT INTO realizan (usuarioC, id_transporte) VALUES
 INSERT INTO gasto_asociado (monto_gasto, observaciones, id_transporte,fecha_gasto) VALUES
     (120, 'Combustible', 1,'2023-11-11'),
     (80, 'Peajes', 2,'2023-07-28');
+    
+insert into transporte values (0,'Pendiente','2024-09-01 07:00:00', null, 277, 'Montevideo', 'Mercedes, Soriano', null, null, '123456789', 1);
+insert into transporte values (0,'Pendiente','2024-09-15 07:00:00', null, 221, 'Montevideo', 'Villa del Carmen, Durazno', null, null, '987654321', 1);
+insert into transporte values (0,'Pendiente','2024-09-28 07:00:00', null, 262, 'Montevideo', 'Lascano, Rocha', null, null, '123456789', 1);
+insert into transporte values (0,'Pendiente','2024-10-01 07:00:00', null, 389, 'Montevideo', 'Tambores, Paysandú', null, null, '987654321', 1);
+insert into transporte values (0,'Pendiente','2024-10-15 07:00:00', null, 572, 'Montevideo', 'Sequeira, Artigas', null, null, '123456789', 1);
+
 /*----------STORE PROCEDURES----------*/
 
 /*----------SP LOGIN----------*/
