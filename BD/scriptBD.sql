@@ -387,7 +387,7 @@ cuerpo:BEGIN
 			INSERT INTO empleado(usuario,contrasenia,nombre_completo,activo) VALUES (pUsuario,hex(aes_encrypt(pPass, '123')),pNombre,1);
 			
 			SET mensajeError = "No se pudo insertar el Tecnico.";
-			INSERT INTO tecnico(usuarioT,nro_licencia,telefono) VALUES (pUsuario, pLicencia,pTelefono);
+			INSERT INTO tecnico(usuarioT,especializacion) VALUES (pUsuario, pEspecializacion);
         END;
 	END IF;
     
