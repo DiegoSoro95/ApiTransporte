@@ -1,5 +1,6 @@
 var Transportes = require('../models/Transportes')
 var db_con = require('../db')
+var mongoConexion = require('../mongoDB');
 
 module.exports = {
     buscarTransporte: function(req,res){
@@ -345,7 +346,6 @@ module.exports = {
       //POST
       // Llama al procedimiento almacenado
       const fechaInicio = req.body.fechaInicio;
-      const fechaFin = req.body.fechaFin;
       const kmRecorridos = req.body.kmRecorridos;
       const origen = req.body.origen;
       const destino = req.body.destino;
@@ -355,8 +355,8 @@ module.exports = {
       let resultado ='';
   
       db_con.query(
-        'CALL AltaTransporteSinChofer(?,?,?,?,?,?,?,?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
-        [fechaInicio,fechaFin,kmRecorridos,origen,destino,matricula,cliente,idAdmin], // Pasa los parámetros requeridos por el procedimiento almacenado
+        'CALL AltaTransporteSinChofer(?,?,?,?,?,?,?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
+        [fechaInicio,kmRecorridos,origen,destino,matricula,cliente,idAdmin], // Pasa los parámetros requeridos por el procedimiento almacenado
         (err, results) => {
           if (err) {
             return res.status(500).json({
@@ -390,7 +390,6 @@ module.exports = {
       //POST
       // Llama al procedimiento almacenado
       const fechaInicio = req.body.fechaInicio;
-      const fechaFin = req.body.fechaFin;
       const kmRecorridos = req.body.kmRecorridos;
       const origen = req.body.origen;
       const destino = req.body.destino;
@@ -401,8 +400,8 @@ module.exports = {
       let resultado ='';
   
       db_con.query(
-        'CALL AltaTransporteConChofer(?,?,?,?,?,?,?,?,?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
-        [fechaInicio,fechaFin,kmRecorridos,origen,destino,matricula,idChofer,cliente,idAdmin], // Pasa los parámetros requeridos por el procedimiento almacenado
+        'CALL AltaTransporteConChofer(?,?,?,?,?,?,?,?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
+        [fechaInicio,kmRecorridos,origen,destino,matricula,idChofer,cliente,idAdmin], // Pasa los parámetros requeridos por el procedimiento almacenado
         (err, results) => {
           if (err) {
             return res.status(500).json({
@@ -515,6 +514,29 @@ module.exports = {
           });
         }
       );
+    },
+    ubicacionReal: function(req,res){
+
+      const idTransporte = req.body.idTransporte;
+      const latitud = req.body.latitud;
+      const logitud = req.body.logitud;
+
+      const db= mongoConexion.db('transportesdb');
+      const collection = db.collection('ubicaciones');
+
+      // Documento a insertar
+      const ubicaciones = {
+        idTransporte: idTransporte,
+        latitud: latitud,
+        longitud: logitud
+      };
+
+      const resultado =  collection.insertOne(ubicaciones);
+
+      // Cierra la conexión
+      return res.status(200).json( {
+        message: "Datos ingresados correctamente"
+      })
     },
       
 }

@@ -5,6 +5,7 @@ var bodyParser = require('body-parser')
 
 /*toda la configuración de bbdd la hacemos en un fichero a parte*/
 require('./db')
+require('./mongoDB')
 
 var port = process.env.PORT || 4000  // establecemos nuestro puerto
 

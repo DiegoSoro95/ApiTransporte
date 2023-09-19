@@ -20,7 +20,7 @@ CREATE TABLE administrador (
 
 CREATE TABLE chofer (
 	usuarioC VARCHAR(50) PRIMARY KEY,
-	nro_licencia VARCHAR(50)NOT NULL,
+	nro_licencia VARCHAR(50) NOT NULL,
 	telefono INT NOT NULL,
 	FOREIGN KEY(usuarioC) REFERENCES empleado(usuario)
 );
@@ -90,7 +90,7 @@ CREATE TABLE transporte(
 	id_transporte INT NOT NULL AUTO_INCREMENT,
 	estado_transporte VARCHAR(10) NOT NULL,
 	fecha_hora_inicio DATETIME NOT NULL,
-	fecha_hora_fin DATETIME,
+	fecha_hora_fin DATETIME DEFAULT NULL,
 	kms_distancia INT NOT NULL,
 	origen VARCHAR(100) NOT NULL,
 	destino VARCHAR(100) NOT NULL,
@@ -550,7 +550,7 @@ CREATE PROCEDURE ListadoTransportesNoRealizados()
 	SELECT * FROM transporte WHERE estado_transporte='Pendiente' and activo=1;
 
 DELIMITER //
-CREATE PROCEDURE AltaTransporteSinChofer(pFechaInicio Datetime, pFechaFin Datetime, pkmsRecorrido INT(11), pOrigen VARCHAR(50), pDestino VARCHAR(50), pMatricula VARCHAR(10), pCliente VARCHAR(15),pUsuarioA VARCHAR(50), OUT MsgError VARCHAR(250))
+CREATE PROCEDURE AltaTransporteSinChofer(pFechaInicio Datetime, pkmsRecorrido INT(11), pOrigen VARCHAR(50), pDestino VARCHAR(50), pMatricula VARCHAR(10), pCliente VARCHAR(15),pUsuarioA VARCHAR(50), OUT MsgError VARCHAR(250))
 cuerpo:BEGIN
 
 	DECLARE mensajeError VARCHAR(50);
@@ -580,7 +580,7 @@ cuerpo:BEGIN
     START TRANSACTION;
 
 	SET mensajeError = "No se pudo agregar el transporte.";
-	INSERT INTO transporte (estado_transporte,fecha_hora_inicio,fecha_hora_fin,kms_distancia,origen, destino, matricula, documentoCliente) VALUES ('Pendiente', pFechaInicio, pFechaFin, pkmsRecorrido, pOrigen, pDestino, pMatricula, pCliente);
+	INSERT INTO transporte (estado_transporte,fecha_hora_inicio,kms_distancia,origen, destino, matricula, documentoCliente) VALUES ('Pendiente', pFechaInicio, pkmsRecorrido, pOrigen, pDestino, pMatricula, pCliente);
 	
 	SET mensajeError = "No se pudo asignar el administrador al transporte.";
 	INSERT INTO genera (usuarioA, id_transporte) VALUES (pUsuarioA,pIdTransporte);
@@ -591,7 +591,7 @@ END//
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE AltaTransporteConChofer(pFechaInicio Datetime, pFechaFin Datetime, pkmsRecorrido INT(11), pOrigen VARCHAR(50), pDestino VARCHAR(50), pMatricula VARCHAR(10),pUsuarioC VARCHAR(50), pCliente VARCHAR(15),pUsuarioA VARCHAR(50), OUT MsgError VARCHAR(250))
+CREATE PROCEDURE AltaTransporteConChofer(pFechaInicio Datetime, pkmsRecorrido INT(11), pOrigen VARCHAR(50), pDestino VARCHAR(50), pMatricula VARCHAR(10),pUsuarioC VARCHAR(50), pCliente VARCHAR(15),pUsuarioA VARCHAR(50), OUT MsgError VARCHAR(250))
 cuerpo:BEGIN
 
 	DECLARE mensajeError VARCHAR(50);
@@ -623,7 +623,7 @@ cuerpo:BEGIN
     START TRANSACTION;
 
 	SET mensajeError = "No se pudo agregar el transporte.";
-	INSERT INTO transporte (estado_transporte,fecha_hora_inicio,fecha_hora_fin,kms_distancia,origen, destino, matricula,usuarioC,documentoCliente) VALUES ('Pendiente', pFechaInicio, pFechaFin, pkmsRecorrido, pOrigen, pDestino, pMatricula,pUsuarioC,pCliente);
+	INSERT INTO transporte (estado_transporte,fecha_hora_inicio,kms_distancia,origen, destino, matricula,usuarioC,documentoCliente) VALUES ('Pendiente', pFechaInicio, pkmsRecorrido, pOrigen, pDestino, pMatricula,pUsuarioC,pCliente);
 
 	SET mensajeError = "No se pudo asignar el transporte al chofer.";
 	INSERT INTO realizan (usuarioC, id_transporte) VALUES (pUsuarioC,pIdTransporte);
