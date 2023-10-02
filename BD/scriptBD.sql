@@ -97,7 +97,7 @@ CREATE TABLE transporte(
 	matricula VARCHAR(10),
 	usuarioC VARCHAR(50),
 	documentoCliente VARCHAR(15),
-	activo BIT NOT NULL,
+	activo BIT NOT NULL DEFAULT 1,
 	PRIMARY KEY (id_transporte),
 	FOREIGN KEY (matricula) REFERENCES camion(matricula),
 	FOREIGN KEY (usuarioC) REFERENCES chofer(usuarioC),
@@ -555,7 +555,7 @@ cuerpo:BEGIN
 
 	DECLARE mensajeError VARCHAR(50);
     DECLARE transaccionActiva BIT;
-    
+    DECLARE pIdTransporte INT;
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     
     BEGIN
@@ -582,8 +582,9 @@ cuerpo:BEGIN
 	SET mensajeError = "No se pudo agregar el transporte.";
 	INSERT INTO transporte (estado_transporte,fecha_hora_inicio,kms_distancia,origen, destino, matricula, documentoCliente) VALUES ('Pendiente', pFechaInicio, pkmsRecorrido, pOrigen, pDestino, pMatricula, pCliente);
 	
+	SET pIdTransporte = LAST_INSERT_ID();
 	SET mensajeError = "No se pudo asignar el administrador al transporte.";
-	INSERT INTO genera (usuarioA, id_transporte) VALUES (pUsuarioA,pIdTransporte);
+	INSERT INTO generan (usuarioA, id_transporte) VALUES (pUsuarioA,pIdTransporte);
 	COMMIT;
     
     SET transaccionActiva = 0;
@@ -596,6 +597,7 @@ cuerpo:BEGIN
 
 	DECLARE mensajeError VARCHAR(50);
     DECLARE transaccionActiva BIT;
+    DECLARE pIdTransporte INT;
     
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     
@@ -625,11 +627,12 @@ cuerpo:BEGIN
 	SET mensajeError = "No se pudo agregar el transporte.";
 	INSERT INTO transporte (estado_transporte,fecha_hora_inicio,kms_distancia,origen, destino, matricula,usuarioC,documentoCliente) VALUES ('Pendiente', pFechaInicio, pkmsRecorrido, pOrigen, pDestino, pMatricula,pUsuarioC,pCliente);
 
+	SET pIdTransporte = LAST_INSERT_ID();
 	SET mensajeError = "No se pudo asignar el transporte al chofer.";
 	INSERT INTO realizan (usuarioC, id_transporte) VALUES (pUsuarioC,pIdTransporte);
 
 	SET mensajeError = "No se pudo asignar el administrador al transporte.";
-	INSERT INTO genera (usuarioA, id_transporte) VALUES (pUsuarioA,pIdTransporte);
+	INSERT INTO generan (usuarioA, id_transporte) VALUES (pUsuarioA,pIdTransporte);
 
 	COMMIT;
     

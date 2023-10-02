@@ -404,6 +404,8 @@ module.exports = {
         [fechaInicio,kmRecorridos,origen,destino,matricula,idChofer,cliente,idAdmin], // Pasa los parámetros requeridos por el procedimiento almacenado
         (err, results) => {
           if (err) {
+            console.log(err);
+
             return res.status(500).json({
               message: 'Error comuniquese con sistemas'
             })
