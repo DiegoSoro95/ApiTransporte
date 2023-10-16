@@ -641,7 +641,7 @@ END//
 DELIMITER ;
     
 DELIMITER //
-CREATE PROCEDURE ModificarTransporte(pIdTrasporte VARCHAR(50), pFechaInicio Datetime, pFechaFin Datetime, pkmsRecorrido INT(11), pOrigen VARCHAR(50), pDestino VARCHAR(50), pMatricula VARCHAR(10),pUsuarioC VARCHAR(50), pCliente VARCHAR(15), OUT MsgError VARCHAR(250))
+CREATE PROCEDURE ModificarTransporte(pIdTransporte VARCHAR(50), pFechaInicio Datetime, pFechaFin Datetime, pkmsRecorrido INT(11), pOrigen VARCHAR(50), pDestino VARCHAR(50), pMatricula VARCHAR(10),pUsuarioC VARCHAR(50), pCliente VARCHAR(15), OUT MsgError VARCHAR(250))
 cuerpo:BEGIN
 
 	DECLARE mensajeError VARCHAR(50);
