@@ -220,7 +220,7 @@ CREATE PROCEDURE LoginTecnico(pUsuario VARCHAR(50), pPass VARCHAR(50))
 /*----------SP CHOFER----------*/
 
 CREATE PROCEDURE ListadoChoferSinTransporteAsignado()
-	SELECT c.*,e.nombre_completo FROM chofer c JOIN empleado e ON c.usuarioC = e.usuario WHERE c.usuarioC NOT IN (SELECT t.usuarioC FROM transporte t WHERE t.estado_transporte != 'Pendiente') AND e.activo=1;
+	SELECT c.*,e.nombre_completo FROM chofer c JOIN empleado e ON c.usuarioC = e.usuario WHERE c.usuarioC NOT IN (SELECT t.usuarioC FROM transporte t) AND e.activo=1;
     
 CREATE PROCEDURE ListadoChofer()
 	SELECT c.*,e.nombre_completo FROM empleado e JOIN chofer c ON e.usuario= c.usuarioC AND e.activo=1;
