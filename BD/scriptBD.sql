@@ -693,7 +693,7 @@ CREATE PROCEDURE EliminarTransporte(pIdTransporte VARCHAR(50), OUT MsgError VARC
 BEGIN
 	IF NOT EXISTS (SELECT * FROM transporte WHERE id_transporte = pIdTransporte and activo=1) THEN 
 		SET MsgError = "No existe dicho transporte.";
-	ELSEIF EXISTS(SELECT * FROM transporte WHERE id_transporte = pIdTransporte and estado_transporte in ('En Viaje','Pendiente')) THEN
+	ELSEIF EXISTS(SELECT * FROM transporte WHERE id_transporte = pIdTransporte and estado_transporte in ('En Viaje','Finalizado')) THEN
 		SET MsgError = "No se puede eliminar un transporte que no sea pendiente.";
 	ELSE
 		UPDATE transporte SET activo=0 WHERE id_transporte = pIdTransporte;
