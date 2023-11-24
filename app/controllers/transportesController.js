@@ -286,7 +286,7 @@ module.exports = {
       let resultado ='';
   
       db_con.query(
-        'CALL IniciarTransporte(?,?,?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
+        'CALL AsignarTransporte(?,?,?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
         [idTransporte,idChofer,idCamion], // Pasa los parámetros requeridos por el procedimiento almacenado
         (err, results) => {
           if (err) {
