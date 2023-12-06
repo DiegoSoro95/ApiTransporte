@@ -135,7 +135,7 @@ module.exports = {
       let resultado ='';
   
       db_con.query(
-          'CALL IniciarRegistroGasto(?,?,?,?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
+          'CALL ModificarGasto(?,?,?,?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
           [idGasto, monto, observacion,fecha], // Pasa los parámetros requeridos por el procedimiento almacenado
           (err, results) => {
           if (err) {
@@ -174,7 +174,7 @@ module.exports = {
       let resultado ='';
   
       db_con.query(
-          'CALL IniciarRegistroGasto(?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
+          'CALL EliminarGasto(?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
           [idGasto], // Pasa los parámetros requeridos por el procedimiento almacenado
           (err, results) => {
           if (err) {
