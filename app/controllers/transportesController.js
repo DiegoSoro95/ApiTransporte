@@ -59,7 +59,7 @@ module.exports = {
               resultado = results[0].resultado;
   
               if (resultado == null){
-                resultado = 'Se actualizo la hora de llegada';
+                resultado = 'Se actualizó la hora de llegada';
               }
               // Cierra la conexión
               return res.status(200).json( {
@@ -177,7 +177,7 @@ module.exports = {
               resultado = results[0].resultado;
   
               if (resultado == null){
-                resultado = 'Se inicio el transporte exitosamente';
+                resultado = 'Se inició el transporte exitosamente';
               }
               // Cierra la conexión
               return res.status(200).json( {
@@ -306,7 +306,7 @@ module.exports = {
               resultado = results[0].resultado;
   
               if (resultado == null){
-                resultado = 'Se asigno el chofer al transporte exitosamente';
+                resultado = 'Se asignó el chofer al transporte exitosamente';
               }
               // Cierra la conexión
               return res.status(200).json( {
@@ -375,7 +375,7 @@ module.exports = {
               resultado = results[0].resultado;
   
               if (resultado == null){
-                resultado = 'Se dio de alta el transporte exitosamente';
+                resultado = 'Se dió de alta el transporte exitosamente';
               }
               // Cierra la conexión
               return res.status(200).json( {
@@ -422,7 +422,7 @@ module.exports = {
               resultado = results[0].resultado;
   
               if (resultado == null){
-                resultado = 'Se dio de alta el transporte exitosamente';
+                resultado = 'Se dió de alta el transporte exitosamente';
               }
               // Cierra la conexión
               return res.status(200).json( {
@@ -468,7 +468,7 @@ module.exports = {
               resultado = results[0].resultado;
   
               if (resultado == null){
-                resultado = 'Se modifico el transporte exitosamente';
+                resultado = 'Se modificó el transporte exitosamente';
               }
               // Cierra la conexión
               return res.status(200).json( {
@@ -506,7 +506,7 @@ module.exports = {
               resultado = results[0].resultado;
   
               if (resultado == null){
-                resultado = 'Se elimino el transporte exitosamente';
+                resultado = 'Se eliminó el transporte exitosamente';
               }
               // Cierra la conexión
               return res.status(200).json( {

@@ -58,7 +58,7 @@ module.exports = {
             resultado = results[0].resultado;
 
             if (resultado == null){
-                resultado = 'Cambio de estado realizado con exito';
+                resultado = 'Cambio de estado realizado con éxito';
             }
             // Cierra la conexión
             return res.status(200).json( {
@@ -99,7 +99,7 @@ module.exports = {
                 resultado = results[0].resultado;
     
                 if (resultado == null){
-                    resultado = 'Alta de solicitud realizada con exito';
+                    resultado = 'Alta de solicitud realizada con éxito';
                 }
                 // Cierra la conexión
                 return res.status(200).json( {

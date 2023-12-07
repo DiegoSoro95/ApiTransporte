@@ -18,12 +18,12 @@ module.exports = {
     
             if(results[0].length == 0) {
               return res.status(200).json( {
-                message: 'No existe dicho Estado de camion'
+                message: 'No existe dicho estado de camión'
               })
             }
             else{
               return res.status(200).json( {
-                message: 'Existe dicho Estado de camion',
+                message: 'Existe dicho estado de camión',
                 listado: results[0],
               })
             }
@@ -83,7 +83,7 @@ module.exports = {
             resultado = results[0].resultado;
 
             if (resultado == null){
-                resultado = 'Alta realizada con exito';
+                resultado = 'Alta realizada con éxito';
             }
             // Cierra la conexión
             return res.status(200).json( {
@@ -122,7 +122,7 @@ module.exports = {
             resultado = results[0].resultado;
 
             if (resultado == null){
-                resultado = 'Modificacion realizada con exito';
+                resultado = 'Modificación realizada con éxito';
             }
             // Cierra la conexión
             return res.status(200).json( {
@@ -159,7 +159,7 @@ module.exports = {
             resultado = results[0].resultado;
 
             if (resultado == null){
-                resultado = 'Baja realizada con exito';
+                resultado = 'Baja realizada con éxito';
             }
             // Cierra la conexión
             return res.status(200).json( {
