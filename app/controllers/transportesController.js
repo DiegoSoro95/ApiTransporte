@@ -375,7 +375,7 @@ module.exports = {
               resultado = results[0].resultado;
   
               if (resultado == null){
-                resultado = 'Se dió de alta el transporte exitosamente';
+                resultado = 'Alta realizada con éxito';
               }
               // Cierra la conexión
               return res.status(200).json( {
@@ -422,7 +422,7 @@ module.exports = {
               resultado = results[0].resultado;
   
               if (resultado == null){
-                resultado = 'Se dió de alta el transporte exitosamente';
+                resultado = 'Alta realizada con éxito';
               }
               // Cierra la conexión
               return res.status(200).json( {
