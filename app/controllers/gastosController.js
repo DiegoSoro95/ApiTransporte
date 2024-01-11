@@ -112,7 +112,7 @@ module.exports = {
             resultado = results[0].resultado;
 
             if (resultado == null){
-                resultado = 'Gasto agregado con exito';
+                resultado = 'Gasto agregado con éxito';
             }
             // Cierra la conexión
             return res.status(200).json( {
@@ -154,7 +154,7 @@ module.exports = {
               resultado = results[0].resultado;
   
               if (resultado == null){
-                  resultado = 'Gasto modificado con exito';
+                  resultado = 'Gasto modificado con éxito';
               }
               // Cierra la conexión
               return res.status(200).json( {
@@ -193,7 +193,7 @@ module.exports = {
               resultado = results[0].resultado;
   
               if (resultado == null){
-                  resultado = 'Gasto eliminado con exito';
+                  resultado = 'Gasto eliminado con éxito';
               }
               // Cierra la conexión
               return res.status(200).json( {

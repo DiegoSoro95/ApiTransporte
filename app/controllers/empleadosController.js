@@ -24,7 +24,7 @@ module.exports = {
       empleado.find('all',function(error, resultado){
       if(error) {
         return res.status(500).json({
-          message: 'Error obteniendo la empleados'
+          message: 'Error obteniendo el empleado'
         })
       }
       return res.json(resultado)
@@ -161,7 +161,7 @@ module.exports = {
             resultado = results[0].resultado;
 
             if (resultado == null){
-              resultado = 'Alta realizada con exito';
+              resultado = 'Alta realizada con éxito';
             }
             // Cierra la conexión
             return res.status(200).json( {
@@ -202,7 +202,7 @@ module.exports = {
             resultado = results[0].resultado;
 
             if (resultado == null){
-              resultado = 'Modificacion realizada con exito';
+              resultado = 'Modificación realizada con éxito';
             }
             // Cierra la conexión
             return res.status(200).json( {
@@ -239,7 +239,7 @@ module.exports = {
             resultado = results[0].resultado;
 
             if (resultado == null){
-              resultado = 'Baja realizada con exito';
+              resultado = 'Baja realizada con éxito';
             }
             // Cierra la conexión
             return res.status(200).json( {
@@ -314,7 +314,7 @@ module.exports = {
 
       if(result[0].length == 0) {
         return res.status(200).json( {
-          message: 'No se encontraron datos del tecnico'
+          message: 'No se encontraron datos del técnico'
         })
       } 
       else {
@@ -351,7 +351,7 @@ module.exports = {
             resultado = results[0].resultado;
 
             if (resultado == null){
-              resultado = 'Alta realizada con exito';
+              resultado = 'Alta realizada con éxito';
             }
             // Cierra la conexión
             return res.status(200).json( {
@@ -390,7 +390,7 @@ module.exports = {
             resultado = results[0].resultado;
 
             if (resultado == null){
-              resultado = 'Modificacion realizada con exito';
+              resultado = 'Modificación realizada con éxito';
             }
             // Cierra la conexión
             return res.status(200).json( {
@@ -426,7 +426,7 @@ module.exports = {
             resultado = results[0].resultado;
 
             if (resultado == null){
-              resultado = 'Baja realizada con exito';
+              resultado = 'Baja realizada con éxito';
             }
             // Cierra la conexión
             return res.status(200).json( {
@@ -488,7 +488,7 @@ module.exports = {
             resultado = results[0].resultado;
 
             if (resultado == null){
-              resultado = 'Contraseña cambiada con exito';
+              resultado = 'Contraseña cambiada con éxito';
             }
             // Cierra la conexión
             return res.status(200).json( {

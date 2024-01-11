@@ -32,7 +32,7 @@ module.exports = {
                 resultado = results[0].resultado;
     
                 if (resultado == null){
-                    resultado = 'Registro de mantenimiento realizado con exito';
+                    resultado = 'Registro de mantenimiento realizado con éxito';
                 }
                 // Cierra la conexión
                 return res.status(200).json( {
