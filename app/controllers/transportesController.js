@@ -521,7 +521,7 @@ module.exports = {
 
       const idTransporte = req.body.idTransporte;
       const latitud = req.body.latitud;
-      const logitud = req.body.logitud;
+      const longitud = req.body.longitud;
 
       const db= mongoConexion.db('transportesdb');
       const collection = db.collection('ubicaciones');
@@ -530,7 +530,7 @@ module.exports = {
       const ubicaciones = {
         idTransporte: idTransporte,
         latitud: latitud,
-        longitud: logitud
+        longitud: longitud
       };
 
       const resultado =  collection.insertOne(ubicaciones);
