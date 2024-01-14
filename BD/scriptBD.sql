@@ -126,6 +126,7 @@ CREATE TABLE gasto_asociado(
 	observaciones VARCHAR(100) NOT NULL,
 	id_transporte INT, PRIMARY KEY (id_gasto),
 	fecha_gasto DATETIME NOT NULL,
+	url_imagen VARCHAR(100) DEFAULT NULL,
 	FOREIGN KEY (id_transporte) REFERENCES transporte(id_transporte)
 );
 
@@ -894,15 +895,15 @@ CREATE PROCEDURE ListarGastosPorTransporte(pIdTransporte VARCHAR(50))
 	SELECT * FROM gasto_asociado WHERE id_transporte=pIdTransporte;
 
 CREATE PROCEDURE ExportarReporteGastos(pFechaInicio Datetime, pFechaFin Datetime)
-	SELECT * FROM gasto_asociado WHERE fecha_gasto BETWEEN pFechaInicio AND pFechaFin ORDER BY id_transporte;
+	SELECT id_gasto, monto_gasto, observaciones, id_transporte, fecha_gasto FROM gasto_asociado WHERE fecha_gasto BETWEEN pFechaInicio AND pFechaFin ORDER BY id_transporte;
 
 DELIMITER //
-CREATE PROCEDURE IniciarRegistroGasto(pIdTransporte VARCHAR(50),pMontoGasto DECIMAL(8,2), pObservacion VARCHAR(100), OUT MsgError VARCHAR(100))
+CREATE PROCEDURE IniciarRegistroGasto(pIdTransporte VARCHAR(50),pMontoGasto DECIMAL(8,2), pObservacion VARCHAR(100), pUrlImagen VARCHAR(100), OUT MsgError VARCHAR(100))
 BEGIN
 	IF NOT EXISTS(SELECT * FROM transporte WHERE id_transporte = pIdTransporte) THEN
 		SET MsgError = "No existe dicho transporte.";
 	ELSE
-		INSERT INTO gasto_asociado (monto_gasto,observaciones,id_transporte,fecha_gasto) VALUES (pMontoGasto,pObservacion,pIdTransporte,now());
+		INSERT INTO gasto_asociado (monto_gasto,observaciones,id_transporte,fecha_gasto,url_imagen) VALUES (pMontoGasto,pObservacion,pIdTransporte,now(),pUrlImagen);
 	END IF;
 END//
 DELIMITER ;
@@ -974,5 +975,6 @@ DELIMITER ;
 
 
 /* CREATE PROCEDURE AltaCamion(pMatricula VARCHAR(10),pAnio INT(11), pMarca VARCHAR(50), pKilometros INT(11), pIdEstado CHAR(3), pIdTipo CHAR(7), OUT MsgError VARCHAR(250))
- CALL EliminarTecnico('diego',@out_value);
- SELECT @out_value;*/
+SET @out_value;
+CALL IniciarRegistroGasto(1,2023,'Prueba','',@out_value);
+SELECT @out_value;*/
