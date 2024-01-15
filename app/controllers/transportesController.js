@@ -226,31 +226,59 @@ module.exports = {
         }
       );
     },
-    listadoTranporteTiempoReal: function(req, res){
-      //FALTA PARTE DE MONGO
-      //GET
-      db_con.query(
-        'CALL ListadoTransporteTiempoReal()', // Pasa los parámetros requeridos por el procedimiento almacenado
-        (err, results) => {
-          if (err) {
-            return res.status(500).json({
-              message: 'Error comuniquese con sistemas'
-            })
+    listadoTranporteTiempoReal: async function(req, res) {
+      try {
+        // GET
+        db_con.query(
+          'CALL ListadoTransporteTiempoReal()', 
+          async (err, results) => {
+            if (err) {
+              return res.status(500).json({
+                message: 'Error comuníquese con sistemas'
+              });
+            }
+    
+            if (results[0].length === 0) {
+              return res.status(200).json({
+                message: 'No existen transportes en tiempo real'
+              });
+            } else {
+              const transportes = results[0];
+    
+              for (const transporte of transportes) {
+                const idTransporte = transporte.id_transporte;
+    
+                const db = mongoConexion.db('transportesdb');
+    
+                try {
+                  const resultado = await db.collection('ubicaciones')
+                    .find({ idTransporte: idTransporte.toString() })
+                    .sort({ _id: -1 })
+                    .limit(1)
+                    .toArray();
+                  
+                  if (resultado.length > 0) {
+                    transporte.latitud = resultado[0].latitud;
+                    transporte.longitud = resultado[0].longitud;
+                  }
+                } catch (error) {
+                  console.error('Error en la consulta MongoDB:', error);
+                }
+              }
+    
+              return res.status(200).json({
+                message: 'Existen transportes en tiempo real',
+                listado: transportes
+              });
+            }
           }
-  
-          if(results[0].length == 0) {
-            return res.status(200).json( {
-              message: 'No existen trasportes en tiempo real'
-            })
-          }
-          else{
-            return res.status(200).json( {
-              message: 'Existen trasportes en tiempo real',
-              listado: results[0],
-            })
-          }
-        }
-      );
+        );
+      } catch (error) {
+        console.error('Error general:', error);
+        return res.status(500).json({
+          message: 'Error general'
+        });
+      }
     },
     listadoTransporteSinChofer: function(req, res){
       //GET
