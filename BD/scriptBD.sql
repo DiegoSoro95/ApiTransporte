@@ -126,6 +126,7 @@ CREATE TABLE gasto_asociado(
 	observaciones VARCHAR(100) NOT NULL,
 	id_transporte INT, PRIMARY KEY (id_gasto),
 	fecha_gasto DATETIME NOT NULL,
+	url_imagen VARCHAR(100) DEFAULT NULL,
 	FOREIGN KEY (id_transporte) REFERENCES transporte(id_transporte)
 );
 
@@ -165,12 +166,12 @@ INSERT INTO estado_camion (id_estado, descripcion) VALUES
     ('SUS', 'Suspendido');
     
 INSERT INTO camion (matricula, anio, marca, kilometros, id_estado, id_tipo) VALUES
-    ('ABC123', 2020, 'Ford', 50000, 'DIS', 'CAJAAB5'),
-    ('XYZ789', 2019, 'Mercedes', 70000, 'MAN', 'CAJCE14');
+    ('ABC1234', 2020, 'Ford', 50000, 'DIS', 'CAJAAB5'),
+    ('XYZ6789', 2019, 'Mercedes', 70000, 'MAN', 'CAJCE14');
 
 INSERT INTO mantenimiento (fecha_mantenimiento, observaciones, estado_mantenimiento, costo, matricula, usuarioT) VALUES
-    ('2023-07-20', 'Revisión general', 1, 500, 'ABC123', 'tecnico1'),
-    ('2023-07-25', 'Reparación motor', 1, 1200, 'XYZ789', 'tecnico2');
+    ('2023-07-20', 'Revisión general', 1, 500, 'ABC1234', 'tecnico1'),
+    ('2023-07-25', 'Reparación motor', 1, 1200, 'XYZ6789', 'tecnico2');
 
 INSERT INTO solicitud_de_material (id_mantenimiento, producto_solicitado, cantidad, estado) VALUES
     (1, 'Aceite de motor', 5, 'Pendiente'),
@@ -181,10 +182,10 @@ INSERT INTO cliente (documento, nombre_completo, direccion, telefono) VALUES
     ('987654321', 'María Gómez', 'Avenida X, Ciudad B', 555987654);
 
 INSERT INTO transporte (activo, estado_transporte, fecha_hora_inicio, fecha_hora_fin, kms_distancia, origen, destino, matricula, usuarioC, documentoCliente) VALUES
-    (1,'En viaje', '2023-07-26 09:00:00', '2023-07-26 15:30:00', 250, 'Ciudad A', 'Ciudad B', 'ABC123', 'chofer1', '123456789'),
-    (1,'Finalizado', '2023-07-28 11:45:00', '2023-07-28 18:20:00', 180, 'Ciudad X', 'Ciudad Y', 'XYZ789', 'chofer2', '987654321'),
-    (1,'Pendiente', '2023-07-30 08:30:00', NULL, 300, 'Ciudad B', 'Ciudad C', 'ABC123', 'chofer2', '987654321'),
-    (1,'En viaje', '2023-08-01 10:00:00', '2023-08-01 18:30:00', 400, 'Ciudad Y', 'Ciudad Z', 'XYZ789', 'chofer1', '123456789');
+    (1,'En viaje', '2023-07-26 09:00:00', '2023-07-26 15:30:00', 250, 'Ciudad A', 'Ciudad B', 'ABC1234', 'chofer1', '123456789'),
+    (1,'Finalizado', '2023-07-28 11:45:00', '2023-07-28 18:20:00', 180, 'Ciudad X', 'Ciudad Y', 'XYZ6789', 'chofer2', '987654321'),
+    (1,'Pendiente', '2023-07-30 08:30:00', NULL, 300, 'Ciudad B', 'Ciudad C', 'ABC1234', 'chofer2', '987654321'),
+    (1,'En viaje', '2023-08-01 10:00:00', '2023-08-01 18:30:00', 400, 'Ciudad Y', 'Ciudad Z', 'XYZ6789', 'chofer1', '123456789');
 
 INSERT INTO generan (usuarioA, id_transporte) VALUES
     ('fabri', 1),
@@ -894,15 +895,15 @@ CREATE PROCEDURE ListarGastosPorTransporte(pIdTransporte VARCHAR(50))
 	SELECT * FROM gasto_asociado WHERE id_transporte=pIdTransporte;
 
 CREATE PROCEDURE ExportarReporteGastos(pFechaInicio Datetime, pFechaFin Datetime)
-	SELECT * FROM gasto_asociado WHERE fecha_gasto BETWEEN pFechaInicio AND pFechaFin ORDER BY id_transporte;
+	SELECT id_gasto, monto_gasto, observaciones, id_transporte, fecha_gasto FROM gasto_asociado WHERE fecha_gasto BETWEEN pFechaInicio AND pFechaFin ORDER BY id_transporte;
 
 DELIMITER //
-CREATE PROCEDURE IniciarRegistroGasto(pIdTransporte VARCHAR(50),pMontoGasto DECIMAL(8,2), pObservacion VARCHAR(100), OUT MsgError VARCHAR(100))
+CREATE PROCEDURE IniciarRegistroGasto(pIdTransporte VARCHAR(50),pMontoGasto DECIMAL(8,2), pObservacion VARCHAR(100), pUrlImagen VARCHAR(100), OUT MsgError VARCHAR(100))
 BEGIN
 	IF NOT EXISTS(SELECT * FROM transporte WHERE id_transporte = pIdTransporte) THEN
 		SET MsgError = "No existe dicho transporte.";
 	ELSE
-		INSERT INTO gasto_asociado (monto_gasto,observaciones,id_transporte,fecha_gasto) VALUES (pMontoGasto,pObservacion,pIdTransporte,now());
+		INSERT INTO gasto_asociado (monto_gasto,observaciones,id_transporte,fecha_gasto,url_imagen) VALUES (pMontoGasto,pObservacion,pIdTransporte,now(),pUrlImagen);
 	END IF;
 END//
 DELIMITER ;
@@ -974,5 +975,6 @@ DELIMITER ;
 
 
 /* CREATE PROCEDURE AltaCamion(pMatricula VARCHAR(10),pAnio INT(11), pMarca VARCHAR(50), pKilometros INT(11), pIdEstado CHAR(3), pIdTipo CHAR(7), OUT MsgError VARCHAR(250))
- CALL EliminarTecnico('diego',@out_value);
- SELECT @out_value;*/
+SET @out_value;
+CALL IniciarRegistroGasto(1,2023,'Prueba','',@out_value);
+SELECT @out_value;*/

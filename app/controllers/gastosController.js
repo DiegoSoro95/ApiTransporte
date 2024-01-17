@@ -1,6 +1,12 @@
 var Gastos = require('../models/Gastos')
 var db_con = require('../db')
 
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
 module.exports = {
     listarGastos: function(req,res){
         //GET
@@ -83,46 +89,73 @@ module.exports = {
         }
     );
     },
-    iniciarRegistroGastos: function(req, res){
-    //POST
-    // Llama al procedimiento almacenado
-    const idTransporte = req.body.idTransporte;
-    const monto = req.body.monto;
-    const observacion = req.body.observacion;
-
-    let resultado ='';
-
-    db_con.query(
-        'CALL IniciarRegistroGasto(?,?,?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
-        [idTransporte, monto, observacion], // Pasa los parámetros requeridos por el procedimiento almacenado
-        (err, results) => {
+    iniciarRegistroGastos: function(req, res) {
+      // Configura multer como middleware para manejar datos de formulario multiparte
+      const formdataMiddleware = upload.single('imagen'); // Ajusta el nombre del campo según tu formulario
+    
+      formdataMiddleware(req, res, function(err) {
         if (err) {
-            return res.status(500).json({
-            message: 'Error comuniquese con sistemas'
-            })
+          return res.status(500).json({
+            message: 'Error al procesar los datos del formulario',
+          });
         }
+    
+        // Continúa con la lógica de tu función
+        const idTransporte = req.body.idTransporte;
+        const monto = req.body.monto;
+        const observacion = req.body.observacion;
+        let imageUrl = '';
+        let resultado = '';
+    
+        if (req.file) {
+          // Configura la ruta para el directorio "uploads"
+          const uploadsDirectory = path.join(__dirname, '../../uploads'); // Ajusta la ruta según tu estructura
+          // Crea el directorio "uploads" si no existe
+          if (!fs.existsSync(uploadsDirectory)) {
+            fs.mkdirSync(uploadsDirectory);
+          }
 
-        // Obtener el valor del parámetro de salida
-        db_con.query('SELECT @resultado AS resultado', (err, results) => {
+          const uploadedFileName = req.file.originalname;
+          const newFilePath = path.join(uploadsDirectory, uploadedFileName); // Cambia la ruta a la raíz del servidor
+
+          // Escribe el buffer en el nuevo archivo
+          fs.writeFileSync(newFilePath, req.file.buffer);
+  
+          // Construye la URL de la imagen
+          imageUrl = `http://127.0.0.1:4000/uploads/${uploadedFileName}`; 
+        }
+    
+        db_con.query(
+          'CALL IniciarRegistroGasto(?,?,?,?,@resultado)',
+          [idTransporte, monto, observacion, imageUrl],
+          (err, results) => {
             if (err) {
-            return res.status(500).json({
-                message: 'Error comuniquese con sistemas'
-            })
-            } else {
-            resultado = results[0].resultado;
-
-            if (resultado == null){
-                resultado = 'Gasto agregado con éxito';
+              return res.status(500).json({
+                message: 'Error comuníquese con sistemas',
+              });
             }
-            // Cierra la conexión
-            return res.status(200).json( {
-                message: resultado
-            })
-            }  
-        });
-        }
-    );
-
+    
+            // Obtener el valor del parámetro de salida
+            db_con.query('SELECT @resultado AS resultado', (err, results) => {
+              if (err) {
+                return res.status(500).json({
+                  message: 'Error comuníquese con sistemas',
+                });
+              } else {
+                resultado = results[0].resultado;
+    
+                if (resultado == null) {
+                  resultado = 'Gasto agregado con éxito';
+                }
+    
+                return res.status(200).json({
+                  message: resultado,
+                });
+              }
+            });
+          }
+        );
+      });
     },
     modificarGastos: function(req, res){
       //POST

@@ -2,6 +2,7 @@ const express = require('express') //llamamos a Express
 const cors = require("cors");
 const app = express()       
 var bodyParser = require('body-parser') 
+const path = require('path');
 
 /*toda la configuración de bbdd la hacemos en un fichero a parte*/
 require('./db')
@@ -20,6 +21,7 @@ app.use(bodyParser.json())
 // es bueno que haya un prefijo, sobre todo por el tema de versiones de la API
 var router = require('./routes')
 app.use('/api', router)
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 //arrancamos el servidor
 app.listen(port)
