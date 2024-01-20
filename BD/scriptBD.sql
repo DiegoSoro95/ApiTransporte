@@ -136,8 +136,8 @@ insert into empleado VALUES ('diego',hex(aes_encrypt('diego123', '123')),'Diego 
 insert into empleado VALUES ('enzo',hex(aes_encrypt('enzo123', '123')),'Enzo Garcia',1);
 insert into empleado VALUES ('chofer1',hex(aes_encrypt('chofer123', '123')),'Test Chofer 1',1);
 insert into empleado VALUES ('chofer2',hex(aes_encrypt('chofer123', '123')),'Test Chofer 2',1);
-insert into empleado VALUES ('tecnico1',hex(aes_encrypt('tecnico123', '123')),'Test Tecnico 1',1);
-insert into empleado VALUES ('tecnico2',hex(aes_encrypt('tecnico123', '123')),'Test Tecnico 2',1);
+insert into empleado VALUES ('tecnico1',hex(aes_encrypt('tec123', '123')),'Test Tecnico 1',1);
+insert into empleado VALUES ('tecnico2',hex(aes_encrypt('tec123', '123')),'Test Tecnico 2',1);
 
 
 insert into administrador VALUES ('fabri', 40);
