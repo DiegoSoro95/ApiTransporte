@@ -756,7 +756,7 @@ END//
 DELIMITER ;
 
 CREATE PROCEDURE ListadoCamionesEnReparacion()
-	SELECT c.* FROM camion c INNER JOIN mantenimiento m WHERE m.estado_mantenimiento=1;
+	SELECT c.* FROM camion c INNER JOIN mantenimiento m ON c.matricula = m.matricula WHERE m.estado_mantenimiento=1;
 
 CREATE PROCEDURE ListadoHistorialMantenimientoCamion(pMatricula VARCHAR(10))
 	SELECT c.anio,c.marca,c.kilometros,c.tipo,m.* FROM camion c INNER JOIN mantenimiento m WHERE m.matricula=pMatricula;
