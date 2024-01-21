@@ -136,8 +136,8 @@ insert into empleado VALUES ('diego',hex(aes_encrypt('diego123', '123')),'Diego 
 insert into empleado VALUES ('enzo',hex(aes_encrypt('enzo123', '123')),'Enzo Garcia',1);
 insert into empleado VALUES ('chofer1',hex(aes_encrypt('chofer123', '123')),'Test Chofer 1',1);
 insert into empleado VALUES ('chofer2',hex(aes_encrypt('chofer123', '123')),'Test Chofer 2',1);
-insert into empleado VALUES ('tecnico1',hex(aes_encrypt('tecnico123', '123')),'Test Tecnico 1',1);
-insert into empleado VALUES ('tecnico2',hex(aes_encrypt('tecnico123', '123')),'Test Tecnico 2',1);
+insert into empleado VALUES ('tecnico1',hex(aes_encrypt('tec123', '123')),'Test Tecnico 1',1);
+insert into empleado VALUES ('tecnico2',hex(aes_encrypt('tec123', '123')),'Test Tecnico 2',1);
 
 
 insert into administrador VALUES ('fabri', 40);
@@ -756,7 +756,7 @@ END//
 DELIMITER ;
 
 CREATE PROCEDURE ListadoCamionesEnReparacion()
-	SELECT c.* FROM camion c INNER JOIN mantenimiento m WHERE m.estado_mantenimiento=1;
+	SELECT c.* FROM camion c INNER JOIN mantenimiento m ON c.matricula = m.matricula WHERE m.estado_mantenimiento=1;
 
 CREATE PROCEDURE ListadoHistorialMantenimientoCamion(pMatricula VARCHAR(10))
 	SELECT c.anio,c.marca,c.kilometros,c.tipo,m.* FROM camion c INNER JOIN mantenimiento m WHERE m.matricula=pMatricula;

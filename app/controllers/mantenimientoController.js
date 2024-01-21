@@ -13,7 +13,7 @@ module.exports = {
         let resultado ='';
     
         db_con.query(
-            'CALL IniciarRegistroGasto(?,?,?,?,?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
+            'CALL RegistrarMantenimiento(?,?,?,?,?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
             [fecha, observacion, costo,matricula,idTecnico], // Pasa los parámetros requeridos por el procedimiento almacenado
             (err, results) => {
             if (err) {
