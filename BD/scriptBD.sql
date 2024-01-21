@@ -947,6 +947,35 @@ BEGIN
 END//
 DELIMITER ;
 
+DELIMITER //
+CREATE PROCEDURE ModificarMantenimiento(pIdMantenimiento INT(11),pFechaMantenimieto DATE, pObservacion VARCHAR(100),pEstado BIT(1),pCosto DECIMAL(8,2),pMatricula VARCHAR(10),pUsuarioT VARCHAR(50), OUT MsgError VARCHAR(100))
+BEGIN
+	IF NOT EXISTS(SELECT * FROM mantenimiento WHERE id_mantenimiento = pIdMantenimiento) THEN
+		SET MsgError = "No existe dicho mantenimiento.";
+	ELSEIF NOT EXISTS(SELECT * FROM camion WHERE matricula = pMatricula) THEN
+		SET MsgError = "No existe dicho camion.";
+	ELSEIF NOT EXISTS(SELECT * FROM tecnico WHERE usuarioT = pUsuarioT) THEN
+		SET MsgError = "El empleado no es un tecnico.";
+	ELSE
+		UPDATE mantenimiento SET fecha_mantenimiento=pFechaMantenimieto ,observaciones=pObservacion ,estado_mantenimiento=pEstado ,costo=pCosto ,matricula=pMatricula ,usuarioT=pUsuarioT WHERE id_mantenimiento=pIdMantenimiento;
+	END IF;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE EliminarMantenimiento(pIdMantenimiento INT(11), OUT MsgError VARCHAR(250))
+BEGIN
+	IF NOT EXISTS(SELECT * FROM mantenimiento WHERE id_mantenimiento = pIdMantenimiento) THEN
+		SET MsgError = "No existe dicho mantenimiento.";
+	ELSEIF EXISTS(SELECT * FROM solicitud_de_material WHERE id_mantenimiento = pIdMantenimiento and estado = 'Aprobada') THEN
+		SET MsgError = "No se puede eliminar un mantenimiento con solicitudes Aprobadas.";
+	ELSE
+		DELETE FROM solicitud_de_material WHERE id_mantenimiento = pIdMantenimiento;
+		DELETE FROM mantenimiento WHERE id_mantenimiento = pIdMantenimiento;
+	END IF;
+END//
+DELIMITER ;
+
 /*----------SP SOLICITUD MATERIALES----------*/
 CREATE PROCEDURE ListadoSolicitudMaterialesMantenimineto(pIdMantenimiento INT(11))
 	SELECT * FROM solicitud_de_material WHERE id_mantenimiento = pIdMantenimiento ORDER BY producto_solicitado;
