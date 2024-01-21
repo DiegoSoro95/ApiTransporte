@@ -61,7 +61,6 @@ module.exports = {
     //GET
     db_con.query(
         'CALL ListadoCamionesEnReparacion()', // Pasa los parámetros requeridos por el procedimiento almacenado
-        [idChofer],
         (err, results) => {
         if (err) {
             return res.status(500).json({

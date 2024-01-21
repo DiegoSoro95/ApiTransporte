@@ -9,7 +9,7 @@ CREATE TABLE empleado (
 	usuario VARCHAR(50) PRIMARY KEY, 
     contrasenia VARCHAR(50), 
     nombre_completo VARCHAR(100),
-	activo BIT NOT NULL
+	activo TINYINT(1) NOT NULL
 );
 
 CREATE TABLE administrador (
@@ -60,7 +60,7 @@ CREATE TABLE mantenimiento (
 	id_mantenimiento INT NOT NULL AUTO_INCREMENT,
 	fecha_mantenimiento DATE NOT NULL,
 	observaciones VARCHAR(100) NOT NULL,
-	estado_mantenimiento bit(1)  NOT NULL,
+	estado_mantenimiento TINYINT(1)  NOT NULL,
 	costo DECIMAL(8,2) NOT NULL,
 	matricula VARCHAR(10),
 	usuarioT VARCHAR(50),
@@ -97,7 +97,7 @@ CREATE TABLE transporte(
 	matricula VARCHAR(10),
 	usuarioC VARCHAR(50),
 	documentoCliente VARCHAR(15),
-	activo BIT NOT NULL DEFAULT 1,
+	activo TINYINT(1) NOT NULL DEFAULT 1,
 	PRIMARY KEY (id_transporte),
 	FOREIGN KEY (matricula) REFERENCES camion(matricula),
 	FOREIGN KEY (usuarioC) REFERENCES chofer(usuarioC),
@@ -136,8 +136,8 @@ insert into empleado VALUES ('diego',hex(aes_encrypt('diego123', '123')),'Diego 
 insert into empleado VALUES ('enzo',hex(aes_encrypt('enzo123', '123')),'Enzo Garcia',1);
 insert into empleado VALUES ('chofer1',hex(aes_encrypt('chofer123', '123')),'Test Chofer 1',1);
 insert into empleado VALUES ('chofer2',hex(aes_encrypt('chofer123', '123')),'Test Chofer 2',1);
-insert into empleado VALUES ('tecnico1',hex(aes_encrypt('tecnico123', '123')),'Test Tecnico 1',1);
-insert into empleado VALUES ('tecnico2',hex(aes_encrypt('tecnico123', '123')),'Test Tecnico 2',1);
+insert into empleado VALUES ('tecnico1',hex(aes_encrypt('tec123', '123')),'Test Tecnico 1',1);
+insert into empleado VALUES ('tecnico2',hex(aes_encrypt('tec123', '123')),'Test Tecnico 2',1);
 
 
 insert into administrador VALUES ('fabri', 40);
@@ -494,7 +494,7 @@ BEGIN
 END//
 DELIMITER ;
 
-CREATE PROCEDURE ListadoTransporteTiempoReal() /*FALTA LEER LA LOCALIZACION DE MONGO*/
+CREATE PROCEDURE ListadoTransporteTiempoReal() 
 	SELECT * FROM transporte WHERE estado_transporte='En Viaje' and activo=1;
     
 CREATE PROCEDURE ListadoTransporteSinChofer()
@@ -756,7 +756,7 @@ END//
 DELIMITER ;
 
 CREATE PROCEDURE ListadoCamionesEnReparacion()
-	SELECT c.* FROM camion c INNER JOIN mantenimiento m WHERE m.estado_mantenimiento=1;
+	SELECT c.* FROM camion c INNER JOIN mantenimiento m ON c.matricula = m.matricula WHERE m.estado_mantenimiento=1;
 
 CREATE PROCEDURE ListadoHistorialMantenimientoCamion(pMatricula VARCHAR(10))
 	SELECT c.anio,c.marca,c.kilometros,c.tipo,m.* FROM camion c INNER JOIN mantenimiento m WHERE m.matricula=pMatricula;
@@ -943,6 +943,35 @@ BEGIN
 		SET MsgError = "El empleado no es un tecnico.";
 	ELSE
 		INSERT INTO mantenimiento (fecha_mantenimiento,observaciones,estado_mantenimiento,costo,matricula,usuarioT) VALUES (pFechaMantenimieto,pObservacion,1,pCosto,pMatricula,pUsuarioT);
+	END IF;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE ModificarMantenimiento(pIdMantenimiento INT(11),pFechaMantenimieto DATE, pObservacion VARCHAR(100),pEstado TINYINT(1),pCosto DECIMAL(8,2),pMatricula VARCHAR(10),pUsuarioT VARCHAR(50), OUT MsgError VARCHAR(100))
+BEGIN
+	IF NOT EXISTS(SELECT * FROM mantenimiento WHERE id_mantenimiento = pIdMantenimiento) THEN
+		SET MsgError = "No existe dicho mantenimiento.";
+	ELSEIF NOT EXISTS(SELECT * FROM camion WHERE matricula = pMatricula) THEN
+		SET MsgError = "No existe dicho camion.";
+	ELSEIF NOT EXISTS(SELECT * FROM tecnico WHERE usuarioT = pUsuarioT) THEN
+		SET MsgError = "El empleado no es un tecnico.";
+	ELSE
+		UPDATE mantenimiento SET fecha_mantenimiento=pFechaMantenimieto ,observaciones=pObservacion ,estado_mantenimiento=pEstado ,costo=pCosto ,matricula=pMatricula ,usuarioT=pUsuarioT WHERE id_mantenimiento=pIdMantenimiento;
+	END IF;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE EliminarMantenimiento(pIdMantenimiento INT(11), OUT MsgError VARCHAR(250))
+BEGIN
+	IF NOT EXISTS(SELECT * FROM mantenimiento WHERE id_mantenimiento = pIdMantenimiento) THEN
+		SET MsgError = "No existe dicho mantenimiento.";
+	ELSEIF EXISTS(SELECT * FROM solicitud_de_material WHERE id_mantenimiento = pIdMantenimiento and estado = 'Aprobada') THEN
+		SET MsgError = "No se puede eliminar un mantenimiento con solicitudes Aprobadas.";
+	ELSE
+		DELETE FROM solicitud_de_material WHERE id_mantenimiento = pIdMantenimiento;
+		DELETE FROM mantenimiento WHERE id_mantenimiento = pIdMantenimiento;
 	END IF;
 END//
 DELIMITER ;
