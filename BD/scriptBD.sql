@@ -494,7 +494,7 @@ BEGIN
 END//
 DELIMITER ;
 
-CREATE PROCEDURE ListadoTransporteTiempoReal() /*FALTA LEER LA LOCALIZACION DE MONGO*/
+CREATE PROCEDURE ListadoTransporteTiempoReal() 
 	SELECT * FROM transporte WHERE estado_transporte='En Viaje' and activo=1;
     
 CREATE PROCEDURE ListadoTransporteSinChofer()
