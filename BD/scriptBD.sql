@@ -9,7 +9,7 @@ CREATE TABLE empleado (
 	usuario VARCHAR(50) PRIMARY KEY, 
     contrasenia VARCHAR(50), 
     nombre_completo VARCHAR(100),
-	activo BIT NOT NULL
+	activo TINYINT(1) NOT NULL
 );
 
 CREATE TABLE administrador (
@@ -60,7 +60,7 @@ CREATE TABLE mantenimiento (
 	id_mantenimiento INT NOT NULL AUTO_INCREMENT,
 	fecha_mantenimiento DATE NOT NULL,
 	observaciones VARCHAR(100) NOT NULL,
-	estado_mantenimiento bit(1)  NOT NULL,
+	estado_mantenimiento TINYINT(1)  NOT NULL,
 	costo DECIMAL(8,2) NOT NULL,
 	matricula VARCHAR(10),
 	usuarioT VARCHAR(50),
@@ -97,7 +97,7 @@ CREATE TABLE transporte(
 	matricula VARCHAR(10),
 	usuarioC VARCHAR(50),
 	documentoCliente VARCHAR(15),
-	activo BIT NOT NULL DEFAULT 1,
+	activo TINYINT(1) NOT NULL DEFAULT 1,
 	PRIMARY KEY (id_transporte),
 	FOREIGN KEY (matricula) REFERENCES camion(matricula),
 	FOREIGN KEY (usuarioC) REFERENCES chofer(usuarioC),
@@ -948,7 +948,7 @@ END//
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE ModificarMantenimiento(pIdMantenimiento INT(11),pFechaMantenimieto DATE, pObservacion VARCHAR(100),pEstado BIT(1),pCosto DECIMAL(8,2),pMatricula VARCHAR(10),pUsuarioT VARCHAR(50), OUT MsgError VARCHAR(100))
+CREATE PROCEDURE ModificarMantenimiento(pIdMantenimiento INT(11),pFechaMantenimieto DATE, pObservacion VARCHAR(100),pEstado TINYINT(1),pCosto DECIMAL(8,2),pMatricula VARCHAR(10),pUsuarioT VARCHAR(50), OUT MsgError VARCHAR(100))
 BEGIN
 	IF NOT EXISTS(SELECT * FROM mantenimiento WHERE id_mantenimiento = pIdMantenimiento) THEN
 		SET MsgError = "No existe dicho mantenimiento.";
