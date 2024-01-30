@@ -182,10 +182,10 @@ INSERT INTO cliente (documento, nombre_completo, direccion, telefono) VALUES
     ('987654321', 'María Gómez', 'Avenida X, Ciudad B', 555987654);
 
 INSERT INTO transporte (activo, estado_transporte, fecha_hora_inicio, fecha_hora_fin, kms_distancia, origen, destino, matricula, usuarioC, documentoCliente) VALUES
-    (1,'En viaje', '2023-07-26 09:00:00', '2023-07-26 15:30:00', 250, 'Ciudad A', 'Ciudad B', 'ABC1234', 'chofer1', '123456789'),
-    (1,'Finalizado', '2023-07-28 11:45:00', '2023-07-28 18:20:00', 180, 'Ciudad X', 'Ciudad Y', 'XYZ6789', 'chofer2', '987654321'),
-    (1,'Pendiente', '2023-07-30 08:30:00', NULL, 300, 'Ciudad B', 'Ciudad C', 'ABC1234', 'chofer2', '987654321'),
-    (1,'En viaje', '2023-08-01 10:00:00', '2023-08-01 18:30:00', 400, 'Ciudad Y', 'Ciudad Z', 'XYZ6789', 'chofer1', '123456789');
+    (1,'En viaje', '2024-03-26 09:00:00', '2024-03-26 15:30:00', 250, 'Ciudad A', 'Ciudad B', 'ABC1234', 'chofer1', '123456789'),
+    (1,'Finalizado', '2024-03-28 11:45:00', '2024-03-28 18:20:00', 180, 'Ciudad X', 'Ciudad Y', 'XYZ6789', 'chofer2', '987654321'),
+    (1,'Pendiente', '2024-03-30 08:30:00', NULL, 300, 'Ciudad B', 'Ciudad C', 'ABC1234', 'chofer2', '987654321'),
+    (1,'En viaje', '2024-04-01 10:00:00', '2024-04-01 18:30:00', 400, 'Ciudad Y', 'Ciudad Z', 'XYZ6789', 'chofer1', '123456789');
 
 INSERT INTO generan (usuarioA, id_transporte) VALUES
     ('fabri', 1),
@@ -197,14 +197,14 @@ INSERT INTO realizan (usuarioC, id_transporte) VALUES
     ('chofer2', 2);
     
 INSERT INTO gasto_asociado (monto_gasto, observaciones, id_transporte,fecha_gasto) VALUES
-    (120, 'Combustible', 1,'2023-11-11'),
-    (80, 'Peajes', 2,'2023-07-28');
+    (120, 'Combustible', 1,'2024-03-26'),
+    (80, 'Peajes', 2,'2024-03-28');
     
-insert into transporte values (0,'Pendiente','2024-09-01 07:00:00', null, 277, 'Montevideo', 'Mercedes, Soriano', null, null, '123456789', 1);
-insert into transporte values (0,'Pendiente','2024-09-15 07:00:00', null, 221, 'Montevideo', 'Villa del Carmen, Durazno', null, null, '987654321', 1);
-insert into transporte values (0,'Pendiente','2024-09-28 07:00:00', null, 262, 'Montevideo', 'Lascano, Rocha', null, null, '123456789', 1);
-insert into transporte values (0,'Pendiente','2024-10-01 07:00:00', null, 389, 'Montevideo', 'Tambores, Paysandú', null, null, '987654321', 1);
-insert into transporte values (0,'Pendiente','2024-10-15 07:00:00', null, 572, 'Montevideo', 'Sequeira, Artigas', null, null, '123456789', 1);
+insert into transporte values (0,'Pendiente','2024-03-01 07:00:00', null, 277, 'Montevideo', 'Mercedes, Soriano', null, null, '123456789', 1);
+insert into transporte values (0,'Pendiente','2024-03-15 07:00:00', null, 221, 'Montevideo', 'Villa del Carmen, Durazno', null, null, '987654321', 1);
+insert into transporte values (0,'Pendiente','2024-03-28 07:00:00', null, 262, 'Montevideo', 'Lascano, Rocha', null, null, '123456789', 1);
+insert into transporte values (0,'Pendiente','2024-04-01 07:00:00', null, 389, 'Montevideo', 'Tambores, Paysandú', null, null, '987654321', 1);
+insert into transporte values (0,'Pendiente','2024-04-15 07:00:00', null, 572, 'Montevideo', 'Sequeira, Artigas', null, null, '123456789', 1);
 
 /*----------STORE PROCEDURES----------*/
 
