@@ -182,10 +182,10 @@ INSERT INTO cliente (documento, nombre_completo, direccion, telefono) VALUES
     ('987654321', 'María Gómez', 'Avenida X, Ciudad B', 555987654);
 
 INSERT INTO transporte (activo, estado_transporte, fecha_hora_inicio, fecha_hora_fin, kms_distancia, origen, destino, matricula, usuarioC, documentoCliente) VALUES
-    (1,'En viaje', '2024-03-26 09:00:00', '2024-03-26 15:30:00', 250, 'Ciudad A', 'Ciudad B', 'ABC1234', 'chofer1', '123456789'),
+    (1,'En Viaje', '2024-03-26 09:00:00', '2024-03-26 15:30:00', 250, 'Ciudad A', 'Ciudad B', 'ABC1234', 'chofer1', '123456789'),
     (1,'Finalizado', '2024-03-28 11:45:00', '2024-03-28 18:20:00', 180, 'Ciudad X', 'Ciudad Y', 'XYZ6789', 'chofer2', '987654321'),
     (1,'Pendiente', '2024-03-30 08:30:00', NULL, 300, 'Ciudad B', 'Ciudad C', 'ABC1234', 'chofer2', '987654321'),
-    (1,'En viaje', '2024-04-01 10:00:00', '2024-04-01 18:30:00', 400, 'Ciudad Y', 'Ciudad Z', 'XYZ6789', 'chofer1', '123456789');
+    (1,'En Viaje', '2024-04-01 10:00:00', '2024-04-01 18:30:00', 400, 'Ciudad Y', 'Ciudad Z', 'XYZ6789', 'chofer1', '123456789');
 
 INSERT INTO generan (usuarioA, id_transporte) VALUES
     ('fabri', 1),
