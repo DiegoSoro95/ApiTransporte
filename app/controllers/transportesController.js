@@ -547,9 +547,9 @@ module.exports = {
     },
     ubicacionReal: function(req,res){
 
-      const idTransporte = req.body.idTransporte;
-      const latitud = req.body.latitud;
-      const longitud = req.body.longitud;
+      const idTransporte = req.body.idTransporte.toString();
+      const latitud = req.body.latitud.toString();
+      const longitud = req.body.longitud.toString();
 
       const db= mongoConexion.db('transportesdb');
       const collection = db.collection('ubicaciones');
