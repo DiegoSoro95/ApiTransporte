@@ -707,7 +707,11 @@ CREATE PROCEDURE ListadoCamiones()
 	SELECT * FROM camion;
 
 CREATE PROCEDURE ListadoCamionesDisponibles()
-	SELECT * FROM camion WHERE matricula NOT IN (SELECT matricula FROM transporte WHERE estado_transporte NOT IN ('En viaje','Pendiente') AND activo=1);
+	SELECT * FROM camion WHERE id_estado='DIS' order by matricula;
+
+
+CREATE PROCEDURE ListadoCamionesMantenimiento()
+	SELECT * FROM camion WHERE id_estado='MAN' order by matricula;
 
 CREATE PROCEDURE BuscarCamion(pMatricula VARCHAR(10))
 	SELECT * FROM camion WHERE matricula = pMatricula;
@@ -837,6 +841,8 @@ CREATE PROCEDURE EliminarEstadoCamion(pidEstado CHAR(3), OUT MsgError VARCHAR(25
 BEGIN
 	IF NOT EXISTS (SELECT * FROM estado_camion WHERE id_estado = pidEstado) THEN 
 		SET MsgError = "No existe dicho estado de camión.";
+	ELSEIF (pidEstado = 'DIS' OR pidEstado = 'MAN') THEN
+		SET MsgError = "No se puede eliminar dicho estado.";
 	ELSEIF EXISTS(SELECT * FROM camion WHERE id_estado = pidEstado) THEN
 		SET MsgError = "No se puede eliminar un estado de camión que esté asignado.";
 	ELSE
@@ -934,6 +940,9 @@ DELIMITER ;
 CREATE PROCEDURE ListarMantenimiento()
 	SELECT * FROM mantenimiento WHERE estado_mantenimiento=1;
 
+CREATE PROCEDURE ListarMantenimientoHistorico()
+	SELECT * FROM mantenimiento WHERE estado_mantenimiento=0;
+
 DELIMITER //
 CREATE PROCEDURE RegistrarMantenimiento(pFechaMantenimieto DATE, pObservacion VARCHAR(100),pCosto DECIMAL(8,2),pMatricula VARCHAR(10),pUsuarioT VARCHAR(50), OUT MsgError VARCHAR(100))
 BEGIN
@@ -957,7 +966,13 @@ BEGIN
 	ELSEIF NOT EXISTS(SELECT * FROM tecnico WHERE usuarioT = pUsuarioT) THEN
 		SET MsgError = "El empleado no es un tecnico.";
 	ELSE
-		UPDATE mantenimiento SET fecha_mantenimiento=pFechaMantenimieto ,observaciones=pObservacion ,estado_mantenimiento=pEstado ,costo=pCosto ,matricula=pMatricula ,usuarioT=pUsuarioT WHERE id_mantenimiento=pIdMantenimiento;
+		BEGIN
+			UPDATE mantenimiento SET fecha_mantenimiento=pFechaMantenimieto ,observaciones=pObservacion ,estado_mantenimiento=pEstado ,costo=pCosto ,matricula=pMatricula ,usuarioT=pUsuarioT WHERE id_mantenimiento=pIdMantenimiento;
+		
+			IF (pEstado = 0) THEN
+				UPDATE camion SET id_estado='DIS' WHERE matricula = pMatricula;
+			END IF;
+		END;
 	END IF;
 END//
 DELIMITER ;

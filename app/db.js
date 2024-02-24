@@ -3,9 +3,9 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const mysql = require("mysql");
-  
+
 let db_con = mysql.createConnection({
-    host: process.env.DBHOST,
+    host: process.env.DBHOST || 'db_mysql',
     user: process.env.DBUSER,
     password: process.env.DBPASS,
     database: process.env.DBNAME
