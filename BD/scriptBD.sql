@@ -580,7 +580,7 @@ cuerpo:BEGIN
 	ELSEIF NOT EXISTS(SELECT * FROM cliente WHERE documento = pCliente) THEN
 		SET MsgError = "No existe dicho cliente.";
 		LEAVE cuerpo;
-	ELSEIF EXISTS(SELECT * FROM transporte WHERE matricula=pMatricula and activo =1 and (pFechaInicio between fecha_hora_inicio and fecha_hora_fin) and estado_transporte != 'Finalizado';) THEN
+	ELSEIF EXISTS(SELECT * FROM transporte WHERE matricula=pMatricula and activo =1 and date(fecha_hora_inicio) = date(pFechaInicio)  and estado_transporte != 'Finalizado') THEN
 		SET MsgError = "Dicha Matricula está reservada para otro viaje en ese rango de fechas.";
 		LEAVE cuerpo;
 	END IF;
@@ -628,10 +628,10 @@ cuerpo:BEGIN
 	ELSEIF NOT EXISTS(SELECT * FROM cliente WHERE documento = pCliente) THEN
 		SET MsgError = "No existe dicho cliente.";
 		LEAVE cuerpo;
-	ELSEIF EXISTS(SELECT * FROM transporte WHERE matricula=pMatricula and activo =1 and (pFechaInicio between fecha_hora_inicio and fecha_hora_fin) and estado_transporte != 'Finalizado';) THEN
+	ELSEIF EXISTS(SELECT * FROM transporte WHERE matricula=pMatricula and activo =1 and date(fecha_hora_inicio) = date(pFechaInicio)  and estado_transporte != 'Finalizado') THEN
 		SET MsgError = "Dicha Matricula está reservada para otro viaje en ese rango de fechas.";
 		LEAVE cuerpo;
-	ELSEIF EXISTS(SELECT * FROM transporte WHERE usuarioC=pUsuarioC and activo =1 and (pFechaInicio between fecha_hora_inicio and fecha_hora_fin) and estado_transporte != 'Finalizado';) THEN
+	ELSEIF EXISTS(SELECT * FROM transporte WHERE usuarioC=pUsuarioC and activo =1 and date(fecha_hora_inicio) = date(pFechaInicio)  and estado_transporte != 'Finalizado') THEN
 		SET MsgError = "Dicha Chofer está asignado para otro viaje en ese rango de fechas.";
 		LEAVE cuerpo;
 	END IF;
