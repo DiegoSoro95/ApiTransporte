@@ -114,7 +114,7 @@ module.exports = {
     
         //GET
         db_con.query(
-            'CALL ListadoHistorialMantenimientoCamion()', // Pasa los parámetros requeridos por el procedimiento almacenado
+            'CALL ListadoCamionesDisponibles()', // Pasa los parámetros requeridos por el procedimiento almacenado
             (err, results) => {
             if (err) {
                 return res.status(500).json({
@@ -130,6 +130,32 @@ module.exports = {
             else{
                 return res.status(200).json( {
                 message: 'Existen camiones disponibles',
+                listado: results[0],
+                })
+            }
+            }
+        );
+    },
+    listarCamionesMantenimiento: function(req, res){
+    
+        //GET
+        db_con.query(
+            'CALL ListadoCamionesMantenimiento()', // Pasa los parámetros requeridos por el procedimiento almacenado
+            (err, results) => {
+            if (err) {
+                return res.status(500).json({
+                message: 'Error comuniquese con sistemas'
+                })
+            }
+    
+            if(results[0].length == 0) {
+                return res.status(200).json( {
+                message: 'No existen camiones en mantenimiento'
+                })
+            }
+            else{
+                return res.status(200).json( {
+                message: 'Existen camiones en mantenimiento',
                 listado: results[0],
                 })
             }

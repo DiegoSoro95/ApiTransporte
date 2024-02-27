@@ -489,7 +489,7 @@ BEGIN
 	IF NOT EXISTS(SELECT * FROM transporte WHERE id_transporte = pIdTransporte  and activo=1) THEN
 		SET MsgError = "No existe dicho transporte.";
 	ELSE
-		UPDATE transporte SET estado_transporte='Finalizado' WHERE id_transporte=pIdTransporte;
+		UPDATE transporte SET estado_transporte='Finalizado',fecha_hora_fin=now() WHERE id_transporte=pIdTransporte;
 	END IF;
 END//
 DELIMITER ;
@@ -499,7 +499,13 @@ CREATE PROCEDURE ListadoTransporteTiempoReal()
     
 CREATE PROCEDURE ListadoTransporteSinChofer()
 	SELECT * FROM transporte WHERE usuarioC is null and activo=1;
-    
+
+CREATE PROCEDURE ListadoTransporteFinalizado()
+	SELECT t.id_transporte,t.fecha_hora_inicio,t.fecha_hora_fin,t.matricula,t.usuarioC, c.nombre_completo,c.telefono, sum(g.monto_gasto) as total_gasto FROM transporte t
+	LEFT JOIN gasto_asociado g on t.id_transporte = g.id_transporte
+	LEFT JOIN cliente c on c.documento = t.documentoCliente
+	WHERE t.estado_transporte='Finalizado' and t.activo=1 group by t.id_transporte order by t.fecha_hora_fin desc;
+
 DELIMITER //
 CREATE PROCEDURE AsignarTransporte(pIdTransporte VARCHAR(50), pUsuarioC VARCHAR(50), pIdCamion VARCHAR(10), OUT MsgError VARCHAR(100))
 cuerpo:BEGIN
@@ -574,6 +580,9 @@ cuerpo:BEGIN
 	ELSEIF NOT EXISTS(SELECT * FROM cliente WHERE documento = pCliente) THEN
 		SET MsgError = "No existe dicho cliente.";
 		LEAVE cuerpo;
+	ELSEIF EXISTS(SELECT * FROM transporte WHERE matricula=pMatricula and activo =1 and date(fecha_hora_inicio) = date(pFechaInicio)  and estado_transporte != 'Finalizado') THEN
+		SET MsgError = "Dicha Matricula está reservada para otro viaje en ese rango de fechas.";
+		LEAVE cuerpo;
 	END IF;
 
 	SET transaccionActiva = 1;
@@ -618,6 +627,12 @@ cuerpo:BEGIN
 		LEAVE cuerpo;
 	ELSEIF NOT EXISTS(SELECT * FROM cliente WHERE documento = pCliente) THEN
 		SET MsgError = "No existe dicho cliente.";
+		LEAVE cuerpo;
+	ELSEIF EXISTS(SELECT * FROM transporte WHERE matricula=pMatricula and activo =1 and date(fecha_hora_inicio) = date(pFechaInicio)  and estado_transporte != 'Finalizado') THEN
+		SET MsgError = "Dicha Matricula está reservada para otro viaje en ese rango de fechas.";
+		LEAVE cuerpo;
+	ELSEIF EXISTS(SELECT * FROM transporte WHERE usuarioC=pUsuarioC and activo =1 and date(fecha_hora_inicio) = date(pFechaInicio)  and estado_transporte != 'Finalizado') THEN
+		SET MsgError = "Dicha Chofer está asignado para otro viaje en ese rango de fechas.";
 		LEAVE cuerpo;
 	END IF;
 
@@ -707,7 +722,11 @@ CREATE PROCEDURE ListadoCamiones()
 	SELECT * FROM camion;
 
 CREATE PROCEDURE ListadoCamionesDisponibles()
-	SELECT * FROM camion WHERE matricula NOT IN (SELECT matricula FROM transporte WHERE estado_transporte NOT IN ('En viaje','Pendiente') AND activo=1);
+	SELECT * FROM camion WHERE id_estado='DIS' order by matricula;
+
+
+CREATE PROCEDURE ListadoCamionesMantenimiento()
+	SELECT * FROM camion WHERE id_estado='MAN' order by matricula;
 
 CREATE PROCEDURE BuscarCamion(pMatricula VARCHAR(10))
 	SELECT * FROM camion WHERE matricula = pMatricula;
@@ -756,7 +775,7 @@ END//
 DELIMITER ;
 
 CREATE PROCEDURE ListadoCamionesEnReparacion()
-	SELECT c.* FROM camion c INNER JOIN mantenimiento m ON c.matricula = m.matricula WHERE m.estado_mantenimiento=1;
+	SELECT c.matricula, m.fecha_mantenimiento,m.observaciones,m.costo,m.usuarioT, IF(m.estado_mantenimiento = 0, 'Finalizado','Activo') as estado_mantenimiento,m.id_mantenimiento FROM camion c INNER JOIN mantenimiento m ON c.matricula = m.matricula order by estado_mantenimiento;
 
 CREATE PROCEDURE ListadoHistorialMantenimientoCamion(pMatricula VARCHAR(10))
 	SELECT c.anio,c.marca,c.kilometros,c.tipo,m.* FROM camion c INNER JOIN mantenimiento m WHERE m.matricula=pMatricula;
@@ -837,6 +856,8 @@ CREATE PROCEDURE EliminarEstadoCamion(pidEstado CHAR(3), OUT MsgError VARCHAR(25
 BEGIN
 	IF NOT EXISTS (SELECT * FROM estado_camion WHERE id_estado = pidEstado) THEN 
 		SET MsgError = "No existe dicho estado de camión.";
+	ELSEIF (pidEstado = 'DIS' OR pidEstado = 'MAN') THEN
+		SET MsgError = "No se puede eliminar dicho estado.";
 	ELSEIF EXISTS(SELECT * FROM camion WHERE id_estado = pidEstado) THEN
 		SET MsgError = "No se puede eliminar un estado de camión que esté asignado.";
 	ELSE
@@ -934,6 +955,9 @@ DELIMITER ;
 CREATE PROCEDURE ListarMantenimiento()
 	SELECT * FROM mantenimiento WHERE estado_mantenimiento=1;
 
+CREATE PROCEDURE ListarMantenimientoHistorico()
+	SELECT * FROM mantenimiento WHERE estado_mantenimiento=0;
+
 DELIMITER //
 CREATE PROCEDURE RegistrarMantenimiento(pFechaMantenimieto DATE, pObservacion VARCHAR(100),pCosto DECIMAL(8,2),pMatricula VARCHAR(10),pUsuarioT VARCHAR(50), OUT MsgError VARCHAR(100))
 BEGIN
@@ -957,7 +981,15 @@ BEGIN
 	ELSEIF NOT EXISTS(SELECT * FROM tecnico WHERE usuarioT = pUsuarioT) THEN
 		SET MsgError = "El empleado no es un tecnico.";
 	ELSE
-		UPDATE mantenimiento SET fecha_mantenimiento=pFechaMantenimieto ,observaciones=pObservacion ,estado_mantenimiento=pEstado ,costo=pCosto ,matricula=pMatricula ,usuarioT=pUsuarioT WHERE id_mantenimiento=pIdMantenimiento;
+		BEGIN
+			IF (pEstado = 0) THEN
+				IF EXISTS(select matricula from mantenimiento where matricula = pMatricula and estado_mantenimiento = 1 group by matricula having count(*) = 1) THEN
+					UPDATE camion SET id_estado='DIS' WHERE matricula = pMatricula;
+				END IF;
+			END IF;
+
+			UPDATE mantenimiento SET fecha_mantenimiento=pFechaMantenimieto ,observaciones=pObservacion ,estado_mantenimiento=pEstado ,costo=pCosto ,matricula=pMatricula ,usuarioT=pUsuarioT WHERE id_mantenimiento=pIdMantenimiento;
+		END;
 	END IF;
 END//
 DELIMITER ;
