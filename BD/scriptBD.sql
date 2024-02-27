@@ -983,7 +983,7 @@ BEGIN
 	ELSE
 		BEGIN
 			IF (pEstado = 0) THEN
-				IF EXISTS(select * from mantenimiento where matricula = pMatricula and estado_mantenimiento = 1 group by matricula having count(*) = 1) THEN
+				IF EXISTS(select matricula from mantenimiento where matricula = pMatricula and estado_mantenimiento = 1 group by matricula having count(*) = 1) THEN
 					UPDATE camion SET id_estado='DIS' WHERE matricula = pMatricula;
 				END IF;
 			END IF;
