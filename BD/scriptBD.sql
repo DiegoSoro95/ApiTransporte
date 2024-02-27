@@ -489,7 +489,7 @@ BEGIN
 	IF NOT EXISTS(SELECT * FROM transporte WHERE id_transporte = pIdTransporte  and activo=1) THEN
 		SET MsgError = "No existe dicho transporte.";
 	ELSE
-		UPDATE transporte SET estado_transporte='Finalizado' WHERE id_transporte=pIdTransporte;
+		UPDATE transporte SET estado_transporte='Finalizado',fecha_hora_fin=now() WHERE id_transporte=pIdTransporte;
 	END IF;
 END//
 DELIMITER ;
