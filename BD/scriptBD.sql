@@ -221,7 +221,7 @@ CREATE PROCEDURE LoginTecnico(pUsuario VARCHAR(50), pPass VARCHAR(50))
 /*----------SP CHOFER----------*/
 
 CREATE PROCEDURE ListadoChoferSinTransporteAsignado()
-	SELECT c.*,e.nombre_completo FROM chofer c JOIN empleado e ON c.usuarioC = e.usuario WHERE c.usuarioC NOT IN (SELECT DISTINCT t.usuarioC FROM transporte t WHERE t.usuarioC is not null) AND e.activo=1;
+	SELECT c.*,e.nombre_completo FROM chofer c JOIN empleado e ON c.usuarioC = e.usuario WHERE c.usuarioC NOT IN (SELECT DISTINCT t.usuarioC FROM transporte t WHERE t.usuarioC is not null AND t.estado_transporte!='Finalizado') AND e.activo=1;
     
 CREATE PROCEDURE ListadoChofer()
 	SELECT c.*,e.nombre_completo FROM empleado e JOIN chofer c ON e.usuario= c.usuarioC AND e.activo=1;
@@ -501,7 +501,7 @@ CREATE PROCEDURE ListadoTransporteSinChofer()
 	SELECT * FROM transporte WHERE usuarioC is null and activo=1;
 
 CREATE PROCEDURE ListadoTransporteFinalizado()
-	SELECT t.id_transporte,t.fecha_hora_inicio,t.fecha_hora_fin,t.matricula,t.usuarioC, c.nombre_completo,c.telefono, sum(g.monto_gasto) as total_gasto FROM transporte t
+	SELECT t.id_transporte,t.fecha_hora_inicio,t.fecha_hora_fin,t.matricula,t.usuarioC, c.nombre_completo,c.telefono, , IF(sum(g.monto_gasto) is null, 0 , sum(g.monto_gasto)) as total_gasto FROM transporte t
 	LEFT JOIN gasto_asociado g on t.id_transporte = g.id_transporte
 	LEFT JOIN cliente c on c.documento = t.documentoCliente
 	WHERE t.estado_transporte='Finalizado' and t.activo=1 group by t.id_transporte order by t.fecha_hora_fin desc;
