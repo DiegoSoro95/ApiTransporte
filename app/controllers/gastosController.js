@@ -120,7 +120,7 @@ module.exports = {
 
           // Escribe el buffer en el nuevo archivo
           fs.writeFileSync(newFilePath, req.file.buffer);
-          const ip = process.env.DBHOST;
+          const ip = process.env.APIHOST;
 
           // Construye la URL de la imagen
           imageUrl = `http://${ip}:4000/uploads/${uploadedFileName}`; 
