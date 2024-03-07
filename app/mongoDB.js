@@ -1,6 +1,8 @@
 const { MongoClient } = require('mongodb');
 
-const uri = "mongodb://127.0.0.1:27017";
+const ip = process.env.MONGOHOST;
+const uri = `mongodb://${ip}:27017`;
+
 const mongoConexion = new MongoClient(uri);
 
 mongoConexion.connect((err) => {
