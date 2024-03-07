@@ -120,9 +120,10 @@ module.exports = {
 
           // Escribe el buffer en el nuevo archivo
           fs.writeFileSync(newFilePath, req.file.buffer);
-  
+          const ip = process.env.DBHOST;
+
           // Construye la URL de la imagen
-          imageUrl = `http://127.0.0.1:4000/uploads/${uploadedFileName}`; 
+          imageUrl = `http://${ip}:4000/uploads/${uploadedFileName}`; 
         }
     
         db_con.query(
