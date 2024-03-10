@@ -82,6 +82,32 @@ module.exports = {
         }
     );
     },
+    listarCamionesEnReparacionAgrupado: function(req, res){
+
+        //GET
+        db_con.query(
+            'CALL ListadoCamionesEnReparacionAgrupado()', // Pasa los parámetros requeridos por el procedimiento almacenado
+            (err, results) => {
+            if (err) {
+                return res.status(500).json({
+                message: 'Error comuniquese con sistemas'
+                })
+            }
+    
+            if(results[0].length == 0) {
+                return res.status(200).json( {
+                message: 'No existen camiones en reparación'
+                })
+            }
+            else{
+                return res.status(200).json( {
+                message: 'Existen camiones en reparación',
+                listado: results[0],
+                })
+            }
+            }
+        );
+        },
     listarHistorialMantenimientoCamion: function(req, res){
     const matricula = req.query.matricula;
 

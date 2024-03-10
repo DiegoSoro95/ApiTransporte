@@ -779,8 +779,15 @@ DELIMITER ;
 CREATE PROCEDURE ListadoCamionesEnReparacion()
 	SELECT c.matricula, m.fecha_mantenimiento,m.observaciones,m.costo,m.usuarioT, IF(m.estado_mantenimiento = 0, 'Finalizado','Activo') as estado_mantenimiento,m.id_mantenimiento FROM camion c INNER JOIN mantenimiento m ON c.matricula = m.matricula order by estado_mantenimiento;
 
+CREATE PROCEDURE ListadoCamionesEnReparacionAgrupado()
+	SELECT c.matricula, m.fecha_mantenimiento,m.observaciones,m.costo,m.usuarioT, IF(m.estado_mantenimiento = 0, 'Finalizado','Activo') as estado_mantenimiento,m.id_mantenimiento
+	FROM mantenimiento m
+	LEFT JOIN mantenimiento m2 ON m.matricula = m2.matricula AND m.fecha_mantenimiento < m2.fecha_mantenimiento
+	LEFT JOIN camion c ON c.matricula = m.matricula 
+	WHERE m2.matricula IS NULL order by estado_mantenimiento;
+
 CREATE PROCEDURE ListadoHistorialMantenimientoCamion(pMatricula VARCHAR(10))
-	SELECT c.anio,c.marca,c.kilometros,c.tipo,m.* FROM camion c INNER JOIN mantenimiento m WHERE m.matricula=pMatricula;
+	SELECT m.* FROM camion c INNER JOIN mantenimiento m on c.matricula=m.matricula WHERE m.matricula=pMatricula;
 
 /*----------SP TIPO CAMION----------*/
 CREATE PROCEDURE ListadoTipoCamion()

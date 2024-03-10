@@ -44,6 +44,20 @@ const auth = require('../auth');
 
     camionesController.listarCamionesEnReparacion(req, res)
   })
+  router.get('/listarCamionesEnReparacionAgrupado', function(req, res) {
+    const token = req.header('Authorization');
+
+    if (!token) {
+        return res.status(401).json({ message: 'Token no proporcionado' });
+    }
+
+    const decoded = auth.verifyToken(token);
+    if (!decoded) {
+        return res.status(403).json({ message: 'Token inválido' });
+    }
+
+    camionesController.listarCamionesEnReparacionAgrupado(req, res)
+  })
   router.get('/listarHistorialMantenimientoCamion', function(req, res) {
     const token = req.header('Authorization');
 
