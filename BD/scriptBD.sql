@@ -659,7 +659,7 @@ END//
 DELIMITER ;
     
 DELIMITER //
-CREATE PROCEDURE ModificarTransporte(pIdTransporte VARCHAR(50), pFechaInicio Datetime, pFechaFin Datetime, pkmsRecorrido INT(11), pOrigen VARCHAR(50), pDestino VARCHAR(50), pMatricula VARCHAR(10),pUsuarioC VARCHAR(50), pCliente VARCHAR(15), OUT MsgError VARCHAR(250))
+CREATE PROCEDURE ModificarTransporte(pIdTransporte VARCHAR(50), pFechaInicio Datetime, pkmsRecorrido INT(11), pOrigen VARCHAR(50), pDestino VARCHAR(50), pMatricula VARCHAR(10),pUsuarioC VARCHAR(50), pCliente VARCHAR(15), OUT MsgError VARCHAR(250))
 cuerpo:BEGIN
 
 	DECLARE mensajeError VARCHAR(50);
@@ -695,7 +695,7 @@ cuerpo:BEGIN
     START TRANSACTION;
 	
 	SET mensajeError = "No se pudo modificar el transporte.";
-	UPDATE transporte SET fecha_hora_inicio=pFechaInicio, fecha_hora_fin=pFechaFin,kms_distancia=pkmsRecorrido,origen=pOrigen,destino=pDestino,matricula=pMatricula,usuarioC=pUsuarioC,documentoCliente=pCliente WHERE id_transporte=pIdTransporte;
+	UPDATE transporte SET fecha_hora_inicio=pFechaInicio,kms_distancia=pkmsRecorrido,origen=pOrigen,destino=pDestino,matricula=pMatricula,usuarioC=pUsuarioC,documentoCliente=pCliente WHERE id_transporte=pIdTransporte;
 	
 	SET mensajeError = "No se pudo modificar el chofer del transporte.";
 	UPDATE realizan SET usuarioC=pUsuarioC WHERE id_transporte=pIdTransporte;

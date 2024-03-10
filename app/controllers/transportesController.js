@@ -491,7 +491,6 @@ module.exports = {
       // Llama al procedimiento almacenado
       const idTransporte = req.body.idTransporte;
       const fechaInicio = req.body.fechaInicio;
-      const fechaFin = req.body.fechaFin;
       const kmRecorridos = req.body.kmRecorridos;
       const origen = req.body.origen;
       const destino = req.body.destino;
@@ -501,8 +500,8 @@ module.exports = {
       let resultado ='';
   
       db_con.query(
-        'CALL ModificarTransporte(?,?,?,?,?,?,?,?,?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
-        [idTransporte,fechaInicio,fechaFin,kmRecorridos,origen,destino,matricula,idChofer,cliente], // Pasa los parámetros requeridos por el procedimiento almacenado
+        'CALL ModificarTransporte(?,?,?,?,?,?,?,?,@resultado)', // Reemplaza 'nombre_procedimiento' con el nombre de tu procedimiento almacenado
+        [idTransporte,fechaInicio,kmRecorridos,origen,destino,matricula,idChofer,cliente], // Pasa los parámetros requeridos por el procedimiento almacenado
         (err, results) => {
           if (err) {
             return res.status(500).json({
